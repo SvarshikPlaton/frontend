@@ -11,7 +11,7 @@
 
 ## About
 
-_Some description of the Project will be here soon_ :)
+ProvedCode — brand new social media for talents - IT-programmers of any age and level of experience and employers, who looking for them. Talents post descriptions, links of their work and more on their profile, showing themselves in all their glory to employer, who read their achievements, put "KUDOS" - like, and ultimately connect with those, who liked the most.
 
 ## Get Started
 
