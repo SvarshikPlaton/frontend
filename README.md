@@ -7,7 +7,7 @@
      - [Test the application](#test-the-application)
      - [Build application](#build-application)
 - [Technologies](#technologies)
-- [Our team](#about)
+- [Our team](#our-team)
 
 ## About
 
