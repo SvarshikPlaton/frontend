@@ -1,0 +1,102 @@
+@font-face {
+  font-family: "Logo";
+  src: url("../../fonts/CabinetGrotesk-Black.otf");
+}
+@font-face {
+  font-family: "RegularText";
+  src: url("../../fonts/CabinetGrotesk-Regular.otf");
+}
+@font-face {
+  font-family: "BoldText";
+  src: url("../../fonts/PlusJakartaSans-Bold.otf");
+}
+.header {
+  padding: 1px;
+  background-color: rgba(0, 0, 0, 0.85);
+  position: fixed;
+  width: 100%;
+  box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+.header .logo,
+.header #menu {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.logo {
+  font-family: "Logo";
+  position: relative;
+  display: inline-block;
+  font-size: 39px;
+  margin-top: 48px;
+  margin-left: 96px;
+}
+
+.logo::after {
+  content: "Code";
+
+  color: #fff;
+}
+
+.logo {
+  background: linear-gradient(180deg, #ce9ffc 0%, #a582f7 50.52%, #7367f0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+#menu li {
+  display: inline-block;
+  margin-top: 20px;
+  margin-left: 30px;
+}
+#menu button {
+  font-family: "RegularText";
+  font-size: 16px;
+  color: #c9c9c9;
+  text-decoration: none;
+  display: inline-block;
+  padding: 14px;
+  background: rgba(255, 0, 0, 0);
+  border: none;
+}
+#menu button:hover {
+  color: white;
+}
+
+.login {
+  background: linear-gradient(180deg, #ce9ffc 0%, #a582f7 50.52%, #7367f0 100%);
+  color: aliceblue;
+  font-family: "BoldText";
+  font-size: 16px;
+  width: 125px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  margin-left: 52px;
+  margin-top: 10px;
+}
+
+.register {
+  background: rgba(255, 0, 0, 0);
+  color: aliceblue;
+  font-family: "BoldText";
+  font-size: 16px;
+  width: 125px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  margin-left: 52px;
+  margin-top: 10px;
+  border-style: solid;
+  border-image: linear-gradient(
+      180deg,
+      #ce9ffc 0%,
+      #a582f7 50.52%,
+      #7367f0 100%
+    )
+    5; /* ширина рамки равна 1px */
+}
