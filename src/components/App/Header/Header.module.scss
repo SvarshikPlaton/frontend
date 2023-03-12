@@ -1,36 +1,26 @@
-@font-face {
-  font-family: "Logo";
-  src: url("../../fonts/CabinetGrotesk-Black.otf");
-}
-@font-face {
-  font-family: "RegularText";
-  src: url("../../fonts/CabinetGrotesk-Regular.otf");
-}
-@font-face {
-  font-family: "BoldText";
-  src: url("../../fonts/PlusJakartaSans-Bold.otf");
-}
+$gradient: linear-gradient(180deg, #ce9ffc 0%, #a582f7 50.52%, #7367f0 100%);
+$purple: #7367f0;
+
 .header {
-  padding: 1px;
-  background-color: rgba(0, 0, 0, 0.85);
   position: fixed;
   width: 100%;
   box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.15);
   color: #fff;
+  font-weight: 500;
   display: flex;
   align-items: center;
 }
-.header .logo,
-.header #menu {
+.logo,
+.menu {
   display: inline-block;
   vertical-align: middle;
 }
 
 .logo {
-  font-family: "Logo";
   position: relative;
   display: inline-block;
-  font-size: 39px;
+  font-size: 40px;
+  font-weight: 900;
   margin-top: 48px;
   margin-left: 96px;
 }
@@ -48,13 +38,13 @@
   color: transparent;
 }
 
-#menu li {
+.menu li {
   display: inline-block;
   margin-top: 20px;
   margin-left: 30px;
 }
-#menu button {
-  font-family: "RegularText";
+.menu button {
+  font-weight: 500;
   font-size: 16px;
   color: #c9c9c9;
   text-decoration: none;
@@ -63,15 +53,14 @@
   background: rgba(255, 0, 0, 0);
   border: none;
 }
-#menu button:hover {
+.menu button:hover {
   color: white;
 }
 
 .login {
   background: linear-gradient(180deg, #ce9ffc 0%, #a582f7 50.52%, #7367f0 100%);
   color: aliceblue;
-  font-family: "BoldText";
-  font-size: 16px;
+  font-family: "Plus Jakarta Sans";
   width: 125px;
   height: 40px;
   border: none;
@@ -83,20 +72,12 @@
 .register {
   background: rgba(255, 0, 0, 0);
   color: aliceblue;
-  font-family: "BoldText";
-  font-size: 16px;
+  font-family: "Plus Jakarta Sans";
+  font-weight: 600;
   width: 125px;
   height: 40px;
-  border: none;
-  border-radius: 5px;
   margin-left: 52px;
   margin-top: 10px;
-  border-style: solid;
-  border-image: linear-gradient(
-      180deg,
-      #ce9ffc 0%,
-      #a582f7 50.52%,
-      #7367f0 100%
-    )
-    5; /* ширина рамки равна 1px */
+  border: 5px solid $purple;
+  border-radius: 5px;
 }
