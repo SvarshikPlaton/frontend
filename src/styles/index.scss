@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans:200,300,regular,500,600,700,800,200italic,300italic,italic,500italic,600italic,700italic,800italic');
+@import url('../fonts/CabinetGrotesk/css/cabinet-grotesk.css');
+@import url('./_nulling.scss');
+
+
+.content {
+  width: 1080px;
+  display: block;
+  top: 0;
+  left: 0;
+  margin: 80px auto;
+  padding-bottom: 100px;
+}
+body {
+  font-family: 'CabinetGrotesk', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background-color: #000;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
