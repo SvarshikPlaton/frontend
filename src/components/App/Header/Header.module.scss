@@ -3,61 +3,60 @@ $purple: #7367f0;
 
 .header {
   position: fixed;
+  height: 150px;
   width: 100%;
-  box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.15);
   color: #fff;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-}
-.logo,
-.menu {
-  display: inline-block;
-  vertical-align: middle;
-}
 
-.logo {
-  position: relative;
-  display: inline-block;
-  font-size: 40px;
-  font-weight: 900;
-  margin-top: 48px;
-  margin-left: 96px;
-}
-
-.logo::after {
-  content: "Code";
-
-  color: #fff;
+  & div:first-child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+  }
 }
 
 .logo {
   background: linear-gradient(180deg, #ce9ffc 0%, #a582f7 50.52%, #7367f0 100%);
+  margin-right: 96px;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+  font-size: 40px;
+  font-weight: 900;
+
+  span {
+    background: none;
+    color: white;
+  }
 }
 
-.menu li {
-  display: inline-block;
-  margin-top: 20px;
-  margin-left: 30px;
+.nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1 1 auto;
+  gap: 32px;
+  & a {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    line-height: 1.6;
+    &:hover {
+      color: white;
+    }
+  }
 }
-.menu button {
-  font-weight: 500;
-  font-size: 16px;
-  color: #c9c9c9;
-  text-decoration: none;
-  display: inline-block;
-  padding: 14px;
-  background: rgba(255, 0, 0, 0);
-  border: none;
-}
-.menu button:hover {
-  color: white;
+.btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
 }
 
-.login {
+.btn {
   background: linear-gradient(180deg, #ce9ffc 0%, #a582f7 50.52%, #7367f0 100%);
   color: aliceblue;
   font-family: "Plus Jakarta Sans";
@@ -65,19 +64,17 @@ $purple: #7367f0;
   height: 40px;
   border: none;
   border-radius: 5px;
-  margin-left: 52px;
-  margin-top: 10px;
 }
 
-.register {
-  background: rgba(255, 0, 0, 0);
-  color: aliceblue;
-  font-family: "Plus Jakarta Sans";
-  font-weight: 600;
-  width: 125px;
-  height: 40px;
-  margin-left: 52px;
-  margin-top: 10px;
-  border: 5px solid $purple;
-  border-radius: 5px;
-}
+// .register {
+//   background: rgba(255, 0, 0, 0);
+//   color: aliceblue;
+//   font-family: "Plus Jakarta Sans";
+//   font-weight: 600;
+//   width: 125px;
+//   height: 40px;
+//   margin-left: 52px;
+//   margin-top: 10px;
+//   border: 5px solid $purple;
+//   border-radius: 5px;
+// }
