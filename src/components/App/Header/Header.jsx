@@ -1,33 +1,31 @@
 import styles from "./Header.module.scss";
 
 const Header = (props) => {
-  const menuBtns = [
-    { name: "Home", label: "Home" },
-    { name: "searchTalents", label: "Search Talents" },
-    { name: "talentsAlerts", label: "Talents Alerts" },
-    { name: "employers", label: "Employers" },
-    { name: "careerAdvice", label: "Career Advice" },
+  const menuItems = [
+    { label: "Home", link: "/" },
+    { label: "Search Talents", link: "/talents" },
+    { label: "Talents Alerts", link: "/proofs" },
   ];
 
   return (
-    <div className={styles.header}>
-      <h1 className={styles.logo}>Proved</h1>
-      <div className={styles.menu}>
-        <ul>
-          {
-            menuBtns.map(({name, label}, index)=>(
-              <li key={index}>
-                <button type="button" key={name}>
-                  {label}
-                </button>
-              </li>
-            ))
-          }
-        </ul>
+    <header className={styles.header}>
+      <div className="__container">
+        <div className={styles.logo}>
+          Proved<span>Code</span>
+        </div>
+        <nav className={styles.nav}>
+          {menuItems.map(({ label, link }, index) => (
+            <a href={link} key={index}>
+              {label}
+            </a>
+          ))}
+        </nav>
+        <div className={styles.btns}>
+          <button className={styles.btn}>Login</button>
+          <button className={styles.btn}>Register</button>
+        </div>
       </div>
-      <button className={styles.login}>Login</button>
-      <button className={styles.register}>Register</button>
-    </div>
+    </header>
   );
 };
 
