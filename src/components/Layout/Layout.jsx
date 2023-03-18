@@ -1,14 +1,15 @@
-import React from 'react';
-import Header from '../App/Header/Header';
-import Main from '../App/Main/Main';
+import React from "react";
+import styles from './Layout.module.scss';
+import { Header } from "./Header";
+import { Main } from "./Main";
+import { Footer } from "./Footer";
 
-export default function Layout({children}) {
-    return (
-        <>
-            <Header />
-            <Main>
-                {children}
-            </Main>
-        </>
-    )
+export function Layout({ children }) {
+	return (
+		<div className={styles.wrapper}>
+			<Header />
+			<Main>{children}</Main>
+			<Footer />
+		</div>
+	);
 }

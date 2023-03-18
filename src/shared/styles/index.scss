@@ -2,32 +2,19 @@
 @import url("../fonts/CabinetGrotesk/css/cabinet-grotesk.css");
 @import url("./_nulling.scss");
 
-.content {
-  width: 1080px;
-  display: block;
-  top: 0;
-  left: 0;
-  margin: 80px auto;
-  padding-bottom: 100px;
-}
 body {
   font-family: "CabinetGrotesk", sans-serif;
   font-size: 16px;
   line-height: 1.6;
-
+  color: #fff;
   background-color: #000;
-}
-
-.__container {
-  width: min(100% - 20px, 1250px);
-  margin: 0 auto;
 }
 .root {
   min-height: 100%;
   display: flex;
   flex-direction: column;
 }
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.__container {
+  width: min(100% - 20px, 1250px);
+  margin: 0 auto;
 }
