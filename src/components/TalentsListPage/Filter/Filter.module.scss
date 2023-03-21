@@ -1,0 +1,32 @@
+.filters {
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    width: 310px;
+}
+.caption {
+    background: linear-gradient(
+        180deg,
+        #ce9ffc 0%,
+        #a582f7 50.52%,
+        #7367f0 100%
+    );
+
+    background-clip: text;
+    color: transparent;
+    font-size: 39px;
+    font-weight: 900;
+    margin: 0px 64px 0px 0px;
+
+    span {
+        background: none;
+        -webkit-text-fill-color: white;
+        color: white;
+    }
+}
+
+.option {
+    font-size: 22px;
+    font-weight: 900;
+    margin-top: 15px;
+}
