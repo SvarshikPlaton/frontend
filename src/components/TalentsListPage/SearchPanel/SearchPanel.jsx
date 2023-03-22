@@ -1,17 +1,24 @@
 import styles from "./SearchPanel.module.scss";
 
-const inputNames = ["Job title", "Location", "Distance"];
-
 export function SearchPanel() {
     return (
         <div className={styles["search-panel"]}>
-            {inputNames.map((name) => (
-                <input
-                    type="text"
-                    className={styles["search-input"]}
-                    placeholder={name}
-                />
-            ))}
+            <input
+                type="text"
+                className={styles["search-input1"]}
+                placeholder="Keywords/job title"
+            />
+            <input
+                type="text"
+                className={styles["search-input"]}
+                placeholder="Location"
+            />
+            <input
+                type="text"
+                className={styles["search-input"]}
+                placeholder="Distance"
+            />
+
             <button className={styles.btn}>Search</button>
         </div>
     );
