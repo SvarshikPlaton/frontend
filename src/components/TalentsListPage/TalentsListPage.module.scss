@@ -19,3 +19,12 @@
         color: white;
     }
 }
+.grid-container {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+}
+.grid-filter {
+    display: grid;
+    grid-template-columns: 320px;
+    grid-template-rows: 140px;
+}
