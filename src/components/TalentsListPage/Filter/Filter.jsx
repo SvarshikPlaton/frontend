@@ -1,12 +1,12 @@
-import styles from "../Filter/Filter.module.scss";
+import styles from "./Filter.module.scss";
 
 export function Filter() {
     return (
         <div className={styles.filters}>
-            <div className={styles.caption}>
+            <div className={styles["page_title"]}>
                 <span> Talents</span> Found
             </div>
-            <div className={styles.option}>Filter</div>
+            <div className={styles.title}>Filter</div>
             <div className="items"></div>
         </div>
     );

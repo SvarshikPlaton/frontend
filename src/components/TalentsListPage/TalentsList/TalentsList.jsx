@@ -1,5 +1,5 @@
 import styles from "../TalentsList/TalentsList.module.scss";
 
 export function TalentsList() {
-    return <div className={styles["talent-lists"]}></div>;
+    return <div className={styles["talents-lists"]}></div>;
 }

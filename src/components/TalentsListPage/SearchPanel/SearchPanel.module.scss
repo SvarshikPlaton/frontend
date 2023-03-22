@@ -1,35 +1,34 @@
 .search-panel {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap-reverse;
-  margin-top: 80px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 80px;
 }
 
 .search-input {
-  color: aliceblue;
-  font-family: "Plus Jakarta Sans";
-  width: 288px;
-  height: 60px;
-  text-indent: 15px;
-  font-size: 20px;
-  border-radius: 15px;
-  border: 3px solid transparent;
-  background-image: linear-gradient(0deg, #000, #000),
-    linear-gradient(180deg, #ce9ffc 0%, #a582f7 50.52%, #7367f0 100%);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  background-size: 100% 100%, 100% 100%;
+    color: #fff;
+    font-family: "Plus Jakarta Sans";
+    width: 290px;
+    height: 60px;
+    text-indent: 15px;
+    font-size: 20px;
+    border-radius: 15px;
+    border: 3px solid transparent;
+    background-image: linear-gradient(0deg, #000, #000),
+        linear-gradient(180deg, #ce9ffc 0%, #a582f7 50.52%, #7367f0 100%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    background-size: 100% 100%, 100% 100%;
 }
 .btn {
-  color: aliceblue;
-  font-family: "Plus Jakarta Sans";
-  width: 125px;
-  height: 60px;
-  border-radius: 10px;
-  border: 3px solid transparent;
-  background-image: linear-gradient(0deg, #000, #000),
-    linear-gradient(180deg, #ce9ffc 0%, #a582f7 50.52%, #7367f0 100%);
-  background-origin: border-box;
-  background-clip: content-box, border-box;
-  background-size: 100% 100%, 100% 100%;
+    color: #fff;
+    font-family: "Plus Jakarta Sans";
+    width: 125px;
+    height: 60px;
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-image: linear-gradient(0deg, #000, #000),
+        linear-gradient(180deg, #ce9ffc 0%, #a582f7 50.52%, #7367f0 100%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    background-size: 100% 100%, 100% 100%;
 }
