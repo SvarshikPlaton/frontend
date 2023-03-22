@@ -7,12 +7,16 @@ import styles from "./TalentsListPage.module.scss";
 export function TalentsListPage() {
     return (
         <Layout>
-            <div classname={styles["grid-container"]}>
-                <SearchPanel />
-                <div className={styles["page_title"]}>
-                    <span> Talents</span> Found
+            <SearchPanel />
+
+            <div className={styles["grid-container"]}>
+                <div className={styles["grid-filter"]}>
+                    <div className={styles["page_title"]}>
+                        <span> Talents</span> Found
+                    </div>
+                    <Filter />
                 </div>
-                <Filter />
+
                 <TalentsList />
             </div>
         </Layout>
