@@ -40,18 +40,18 @@ export function Filters({ talents }) {
 					case "object":
 						if (val.length !== 0) {
 							for (const v of val) {
-								if (!values.includes(v)) {
+								if (!values.includes(v.toString().toLowerCase())) {
 									// чтобы собрать итоговый массив значений проверяем дубликаты
-									values.push(v);
+									values.push(v.toString().toLowerCase());
 								}
 							}
 						}
 						break;
 
 					case "string":
-						if (!values.includes(val)) {
+						if (!values.includes(val.toLowerCase())) {
 							// также проверяем дубликаты
-							values.push(val);
+							values.push(val.toLowerCase());
 						}
 						break;
 
