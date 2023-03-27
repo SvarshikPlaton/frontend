@@ -7,12 +7,12 @@ const axiosInstance = axios.create({
 });
 
 export const TalentsService = {
-    async getTalents() {
-        const response = await axiosInstance.get(`talents`);
-        return response.content;
+    async getTalents(page, size) {
+        const response = await axiosInstance.get(`talents?page=${page}&size=${size}`);
+        return response?.data?.content;
     },
 	async getCountOfPages() {
         const response = await axiosInstance.get(`talents`);
-        return response.total_pages;
+        return response?.data?.total_pages;
     }
 };
