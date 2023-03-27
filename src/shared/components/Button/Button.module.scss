@@ -18,6 +18,13 @@
 		animation: btn_animation 0.5s ease forwards;
 	}
 }
+@media (max-width: 992px) {
+	.btn:active {
+		color: white;
+		background-size: 0% 0%, 100% 100%;
+		animation: btn_animation 0.5s ease forwards;
+	}
+}
 @keyframes btn_animation {
 	0% {
 		background-position: 0% 0%;
