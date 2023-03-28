@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import s from "./TalentCard.module.scss";
 
 export function TalentCard({ talent }) {
 	return (
-		<a href="/talents" className={s.talent_card}>
+		<Link to="/talents" className={s.talent_card}>
 			<div className={s.photo}>
 				<img src={talent.image} alt="talent_photo" />
 			</div>
@@ -17,6 +18,6 @@ export function TalentCard({ talent }) {
 					))}
 				</div>
 			</div>
-		</a>
+		</Link>
 	);
 }

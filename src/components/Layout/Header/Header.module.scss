@@ -26,6 +26,7 @@ $purple: #7367f0;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 	background-clip: text;
+	display: block;
 	color: transparent;
 	font-size: 40px;
 	font-weight: 900;
@@ -58,6 +59,9 @@ $purple: #7367f0;
 		font-weight: 500;
 		line-height: 1.6;
 		&:hover {
+			color: white;
+		}
+		&.active{
 			color: white;
 		}
 	}

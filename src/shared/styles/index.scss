@@ -2,12 +2,17 @@
 @import url("../fonts/CabinetGrotesk/css/cabinet-grotesk.css");
 @import url("./_nulling.scss");
 
+*::-webkit-scrollbar {  width: 5px;}
+*::-webkit-scrollbar-thumb {background-color: #a582f7;border-radius: 20px;}
+
 body {
   font-family: "CabinetGrotesk", sans-serif;
   font-size: 16px;
   line-height: 1.6;
   color: #fff;
   background-color: #000;
+  scrollbar-width: thin;
+	scrollbar-color: #a582f7;
 }
 .root {
   min-height: 100%;
