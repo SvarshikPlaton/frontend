@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useMemo } from "react";
 import { PageNumber } from "./components/PageNumber";
 import s from "./Pagination.module.scss";
-import { Link } from "react-router-dom";
 import { TalentsContext } from "../../../../context/TalentsContext";
 import { Button } from "../../../../shared/components";
-import { Link } from "react-router-dom";
 
 
 export function Pagination() {
-	const { countOfPages, page, size, setPage } = useContext(TalentsContext);
+	const { countOfPages, page, size, setPage} = useContext(TalentsContext);
 
 
 	const pageNumbers = useMemo(() => {
@@ -19,12 +17,15 @@ export function Pagination() {
 		return arr;
 	}, [countOfPages]);
 
-	const handlerPage = () => {
+	const handlerPage = (i) => {
 		window.scrollTo({
 			top: 0,
 			left: 0,
 			behavior: "smooth",
 		});
+		if (i >= 0 && i < countOfPages) {
+			setPage(i)
+		}
 	};
 
 	return (
