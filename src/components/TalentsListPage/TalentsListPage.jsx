@@ -8,8 +8,7 @@ import styles from "./TalentsListPage.module.scss";
 import data from "./shared/data/response.json";
 import { Pagination } from "./components/Pagination/Pagination";
 import { TalentsService } from "../../services/api-services";
-
-const BASE_URL = "http://18.194.159.42:8081/api";
+import { useSearchParams } from "react-router-dom";
 
 export function TalentsListPage() {
 	const [talents, setTalents] = useState([]);
@@ -19,6 +18,22 @@ export function TalentsListPage() {
 	const [countOfPages, setCountOfPages] = useState(0);
 
 	const { getTalents, getCountOfPages } = TalentsService;
+	const [searchParams, setSearchParams] = useSearchParams();
+
+
+	useEffect(() => {
+		if (searchParams.has("page")) {
+			setPage(Number(searchParams.get("page")));
+		} else {
+			searchParams.set("page", page);
+		}
+		if (searchParams.has("size")) {
+			setSize(Number(searchParams.get("size")));
+		} else {
+			searchParams.set("size", size);
+		}
+		setSearchParams(searchParams, { replace: true });
+	}, [page, searchParams, setSearchParams, size])
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -33,6 +48,7 @@ export function TalentsListPage() {
 			setTalents(data.content);
 		}
 	}, [getTalents, page, size]);
+	
 	useEffect(() => {
 		try {
 			getCountOfPages()
@@ -53,7 +69,7 @@ export function TalentsListPage() {
 				<TalentsList talents={talents} />
 			</div> */}
 			<TalentsList talents={talents} /> {/*temporarily*/}
-			<Pagination countOfPages={countOfPages} page={page} setPage={setPage} />
+			<Pagination countOfPages={countOfPages} page={page} setPage={setPage} size={size} />
 		</Layout>
 	);
 }
