@@ -9,8 +9,6 @@ export function AuthModal() {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-
-
 	const [isOpen, setIsOpen] = useState(false);
 	const windowRef = useRef();
 	const [showLoginForm, setShowLoginForm] = useState(true);

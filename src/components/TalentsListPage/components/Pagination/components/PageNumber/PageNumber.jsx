@@ -10,13 +10,12 @@ export function PageNumber({ index, page, size, pageNumbers, number, handlerPage
 			{index === pageNumbers.length - 1 && page < pageNumbers.length - 3 && (
 				<div>...</div>
 			)}
-			<Link
-				to={`/talents?page=${index}&size=${size}`}
+			<Button	
 				className={`${s.page} ${page === index ? s.selected : ""}`}
 				key={number}
 				onClick={() => handlerPage(index)}>
 				{number}
-			</Link>
+			</Button>
 			{index === 0 && page > 2 && <div>...</div>}
 		</>
 	);

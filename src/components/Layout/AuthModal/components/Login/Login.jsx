@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from "../../../../../context/UserContext/UserContext";
 import { Button, Input } from "../../../../../shared/components";
 import s from "./Login.module.scss";
 
@@ -22,6 +24,9 @@ const advices = [
 ];
 
 export function Login() {
+	const { setAuth } = useContext(UserContext);
+	const location = useLocation();
+	const navigate = useNavigate();
 	return (
 		<>
 			<form action="#" className={s.form}>
@@ -43,7 +48,7 @@ export function Login() {
 						</li>
 					))}
 				</ul>
-				<Button className={s.btn}>Register</Button>
+				<Button className={s.btn} onClick={()=>navigate(location.state.redirect, {replace: true})}>Register</Button>
 			</div>
 		</>
 	);

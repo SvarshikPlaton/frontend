@@ -7,8 +7,6 @@ export function TalentPage() {
 	const params = useParams();
 
 	return (
-		<Layout>
 			<h1>{params?.id}</h1>
-		</Layout>
 	);
 }
