@@ -25,7 +25,7 @@ export function TalentCard({ talent }) {
 				/>
 			</div>
 			<div className={s.info}>
-				<div className={s.name}>{talent.firstname + " " + talent.lastname}</div>
+				<div className={s.name}>{talent.first_name + " " + talent.last_name}</div>
 				<div className={s.specialization}>{talent.specialization}</div>
 				<div className={s.skills}>
 					{talent.skills.map((skill, index) => (
