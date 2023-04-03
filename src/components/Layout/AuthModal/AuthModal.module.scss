@@ -133,9 +133,12 @@
 
 .body {
 	display: grid;
-	grid-template-columns: auto minmax(auto, 400px);
+    max-width: 800px;
+	// grid-template-columns: auto minmax(auto, 400px);
+    grid-template-columns: 1fr 1fr;
 	grid-template-rows: auto;
     padding: 40px 32px;
-    gap: 64px;
+    // gap: 64px;
+    gap: 40px;
 }
 
