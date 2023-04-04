@@ -3,11 +3,10 @@ import { PageNumber } from "./components/PageNumber";
 import s from "./Pagination.module.scss";
 import { TalentsContext } from "../../../../context/TalentsContext";
 import { Button } from "../../../../shared/components";
-
+import { Link } from "react-router-dom";
 
 export function Pagination() {
-	const { countOfPages, page, size, setPage} = useContext(TalentsContext);
-
+	const { countOfPages, page, size, setPage } = useContext(TalentsContext);
 
 	const pageNumbers = useMemo(() => {
 		let arr = [];
@@ -17,25 +16,25 @@ export function Pagination() {
 		return arr;
 	}, [countOfPages]);
 
-	const handlerPage = (i) => {
+	const handlerPage = () => {
 		window.scrollTo({
 			top: 0,
 			left: 0,
 			behavior: "smooth",
 		});
-		if (i >= 0 && i < countOfPages) {
-			setPage(i)
-		}
+		// if (i >= 0 && i < countOfPages) {
+		// 	setPage(i)
+		// }
 	};
 
 	return (
 		<>
 			{countOfPages > 1 ? (
 				<div className={s.pagination}>
-
-					<Button						
+					<Link
 						className={s.left}
-						onClick={()=>handlerPage(page-1)}></Button>
+						to={`/talents?page=${page - 1 >= 0 ? page - 1 : page}&size=${size}`}
+						onClick={() => handlerPage()}></Link>
 
 					<div className={s.pages}>
 						{pageNumbers.map((number, index) => {
@@ -103,10 +102,10 @@ export function Pagination() {
 							return "";
 						})}
 					</div>
-					<Button						
+					<Link
 						className={s.right}
-						onClick={()=>handlerPage(page+1)}></Button>
-
+						to={`/talents?page=${page + 1 < countOfPages ? page + 1 : page}&size=${size}`}
+						onClick={() => handlerPage()}></Link>
 				</div>
 			) : (
 				""

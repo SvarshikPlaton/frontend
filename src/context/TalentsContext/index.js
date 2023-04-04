@@ -1,1 +1,1 @@
-export {TalentsContext, TalentsProvider} from './TalentsContext'
+export { TalentsContext, TalentsProvider } from "./TalentsContext";

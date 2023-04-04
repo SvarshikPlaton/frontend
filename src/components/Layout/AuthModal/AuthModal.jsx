@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 
 import s from "./AuthModal.module.scss";
 import { Login } from "./components/Login/Login";
 import { Register } from "./components/Register/Register";
+import { UserContext } from "../../../context/UserContext";
 
 export function AuthModal() {
 	const location = useLocation();
@@ -24,12 +25,11 @@ export function AuthModal() {
 
 	useEffect(() => {
 		if (location.hash.includes("auth")) {
-			// console.log(location.state?.from?.pathname);
 			showModal();
 		} else {
 			hideModal();
 		}
-	}, [hideModal, location.hash, location.state?.from?.pathname, showModal]);
+	}, [hideModal, location.hash, showModal]);
 
 	useEffect(() => {
 		const handleClickOutside = (e) => {
@@ -40,6 +40,8 @@ export function AuthModal() {
 		document.addEventListener("mousedown", handleClickOutside);
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, [hideModal, location.pathname, navigate]);
+
+	
 
 	return (
 		<div className={`${s.modal} ${isOpen ? s.show : s.hide}`}>
@@ -62,7 +64,7 @@ export function AuthModal() {
 						</div>
 						<button
 							className={s.close}
-							onClick={() => navigate(location.pathname, { replace: true })}>
+							onClick={() => navigate(location.pathname + location.search, { replace: true })}>
 							&#215;
 						</button>
 					</div>

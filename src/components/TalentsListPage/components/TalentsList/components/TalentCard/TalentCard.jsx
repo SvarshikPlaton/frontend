@@ -10,11 +10,7 @@ export function TalentCard({ talent }) {
 
 	return (
 		<Link
-			to={
-				auth
-					? `/talents/${talent.id}`
-					: `/talents#auth`
-			}
+			to={`/talents/${talent.id}`}
 			state={{redirect: `/talents/${talent.id}`}}
 			className={s.talent_card}>
 			{/* <Link to={path} className={s.talent_card}> */}

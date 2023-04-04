@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "../../../../../../shared/components";
 import s from "./PageNumber.module.scss";
+import { Link } from "react-router-dom";
 
 export function PageNumber({ index, page, size, pageNumbers, number, handlerPage }) {
 	
@@ -9,12 +10,13 @@ export function PageNumber({ index, page, size, pageNumbers, number, handlerPage
 			{index === pageNumbers.length - 1 && page < pageNumbers.length - 3 && (
 				<div>...</div>
 			)}
-			<Button	
+			<Link	
 				className={`${s.page} ${page === index ? s.selected : ""}`}
 				key={number}
-				onClick={() => handlerPage(index)}>
+				to={`/talents?page=${index}&size=${size}`}
+				onClick={() => handlerPage()}>
 				{number}
-			</Button>
+			</Link>
 			{index === 0 && page > 2 && <div>...</div>}
 		</>
 	);

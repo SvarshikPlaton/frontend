@@ -8,11 +8,21 @@ const axiosInstance = axios.create({
 
 export const TalentsService = {
     async getTalents(page, size) {
-        const response = await axiosInstance.get(`talents?page=${page}&size=${size}`);
-        return response?.data?.content;
+        try {
+            const response = await axiosInstance.get(`talents?page=${page}&size=${size}`);
+            return response?.data?.content;            
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
     },
-	async getCountOfPages() {
-        const response = await axiosInstance.get(`talents`);
-        return response?.data?.total_pages;
+    async getCountOfPages() {
+        try {
+            const response = await axiosInstance.get(`talents`);
+            return response?.data?.total_pages;            
+        } catch (error) {
+            console.log(error);
+            return 0;
+        }
     }
 };

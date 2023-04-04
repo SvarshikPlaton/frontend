@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./shared/styles/index.scss";
 import { App } from "./App";
 import { TalentsProvider } from "./context/TalentsContext";
-import { UserProvider } from "./context/UserContext/UserContext";
+import { UserProvider } from "./context/UserContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	// <React.StrictMode>

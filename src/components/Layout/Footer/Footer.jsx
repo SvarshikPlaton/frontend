@@ -5,7 +5,7 @@ export function Footer() {
 	return (
 		<footer className={styles.footer}>
 			<div className="__container">
-				Footer
+				
 			</div>
 		</footer>
 	);
