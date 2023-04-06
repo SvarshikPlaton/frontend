@@ -6,31 +6,34 @@ import { UserContext } from "../../../../../../context/UserContext/UserContext";
 import { TalentsContext } from "../../../../../../context/TalentsContext";
 
 export function TalentCard({ talent }) {
-	const { auth } = useContext(UserContext);
+    const { auth } = useContext(UserContext);
 
-	return (
-		<Link
-			to={`/talents/${talent.id}`}
-			state={{redirect: `/talents/${talent.id}`}}
-			className={s.talent_card}>
-			{/* <Link to={path} className={s.talent_card}> */}
-			<div className={s.photo}>
-				<img
-					src={talent.image ? talent.image : placeholder}
-					alt="talent_photo"
-				/>
-			</div>
-			<div className={s.info}>
-				<div className={s.name}>{talent.first_name + " " + talent.last_name}</div>
-				<div className={s.specialization}>{talent.specialization}</div>
-				<div className={s.skills}>
-					{talent.skills.map((skill, index) => (
-						<div className={s.skill} key={index}>
-							{skill}
-						</div>
-					))}
-				</div>
-			</div>
-		</Link>
-	);
+    return (
+        <Link
+            to={`/talents/${talent.id}`}
+            state={{ redirect: `/talents/${talent.id}` }}
+            className={s.talent_card}
+        >
+            {/* <Link to={path} className={s.talent_card}> */}
+            <div className={s.photo}>
+                <img
+                    src={talent.image ? talent.image : placeholder}
+                    alt="talent_photo"
+                />
+            </div>
+            <div className={s.info}>
+                <div className={s.name}>
+                    {talent.first_name + " " + talent.last_name}
+                </div>
+                <div className={s.specialization}>{talent.specialization}</div>
+                <div className={s.skills}>
+                    {talent.skills.map((skill, index) => (
+                        <div className={s.skill} key={index}>
+                            {skill}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </Link>
+    );
 }
