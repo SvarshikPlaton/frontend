@@ -37,4 +37,14 @@ export const TalentsService = {
             return error;
         }
     },
+    async getProofs(id) {
+        try {
+            const response = await axiosInstance.get(`talents/${id}/proofs`);
+
+            return response?.data.proofs.content;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
 };
