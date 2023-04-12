@@ -80,7 +80,7 @@ export function Register() {
 			setSpecialization(prev=>({...prev, state:true}));
 		}
 		else{
-			if(lastName.name.trim() === ""){
+			if(specialization.spec.trim() === ""){
 				setSpecialization(prev=>({...prev, error:"*empty field"}));
 			}
 			else if(specialization.spec.length > 70){
