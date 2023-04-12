@@ -29,7 +29,7 @@ export const TalentsService = {
     },
     async getTalent(id) {
         try {
-            const response = await axiosInstance.get(`talents/${id}`);
+            const response = await axiosInstance.get(`talents/${id}/proofs`);
 
             return response?.data;
         } catch (error) {
