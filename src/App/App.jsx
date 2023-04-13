@@ -16,12 +16,8 @@ export function App() {
                     index
                     element={<Navigate to="/talents" replace={true} />}
                 />
-                <Route path="talents" element={<TalentsListPage />} />
-                <Route
-                    index
-                    element={<Navigate to="/proofs" replace={true} />}
-                />
-                <Route path="proofs" element={<ListProofsPage />} />
+                <Route path="talents" element={<TalentsListPage />} />                
+                {/* <Route path="proofs" element={<ListProofsPage />} /> */}
 
                 <Route element={<RequireAuth redirect={"/talents"} />}>
                     <Route path="talents/:id" element={<TalentPage />} />

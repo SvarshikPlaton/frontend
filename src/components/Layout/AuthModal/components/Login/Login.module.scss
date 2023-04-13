@@ -7,11 +7,7 @@
     margin-top: 32px;
 	gap: 16px;
     max-width: 350px; // делать через боди
-    padding-left: 20px;
-    & .btn{
-        position: absolute;
-        bottom: 0;
-    }
+    padding-left: 20px;    
     &:first-child{
         font-size: 12px;
     }
@@ -74,4 +70,14 @@
         color:#fe54a3;
         -webkit-text-fill-color: #fe54a3;
     }
+}
+.controls{
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+}
+.error_message{
+    color:#fe54a3;
+    padding: 10px;
+    font-size: 14px;
 }

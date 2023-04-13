@@ -3,6 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../../../../../context/UserContext/UserContext";
 import { Button, Input } from "../../../../../shared/components";
 import s from "./Login.module.scss";
+import { TalentsService } from "../../../../../services/api-services";
+import { useCookies } from "react-cookie";
+import { switchCase } from "@babel/types";
 
 const advices = [
 	{
@@ -23,9 +26,11 @@ const advices = [
 	},
 ];
 
-export function Login() {
+export function Login({switcher}) {
 	const location = useLocation();
 	const navigate = useNavigate();
+
+	const { login } = TalentsService;
 
 	const [email, setEmail] = useState({ mail: "", error: "", state: true });
 	const [password, setPassword] = useState({
@@ -33,12 +38,16 @@ export function Login() {
 		error: "",
 		state: true,
 	});
+	const [errMessage, setErrMessage] = useState("");
+	const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
+	const { setAuth } = useContext(UserContext);
 
-	function validateEmail() {
+	const validateEmail = useCallback(() => {
 		const EMAIL_REGEXP =
 			/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 		if (EMAIL_REGEXP.test(String(email.mail).toLowerCase())) {
 			setEmail((prev) => ({ ...prev, state: true }));
+			return true;
 		} else {
 			if (email.mail.trim() === "") {
 				setEmail((prev) => ({ ...prev, error: "*empty field" }));
@@ -53,13 +62,15 @@ export function Login() {
 				setEmail((prev) => ({ ...prev, error: "*not valid email" }));
 			}
 			setEmail((prev) => ({ ...prev, state: false }));
+			return false;
 		}
-	}
+	}, [email.mail]);
 
-	function validatePassword() {
+	const validatePassword = useCallback(() => {
 		const PASSWORD_REGEXP = /^[a-zA-Z0-9]{8,}$/;
 		if (PASSWORD_REGEXP.test(String(password.pswd).toLowerCase())) {
 			setPassword((prev) => ({ ...prev, state: true }));
+			return true;
 		} else {
 			if (password.pswd.trim() === "") {
 				setPassword((prev) => ({ ...prev, error: "*empty field" }));
@@ -77,29 +88,63 @@ export function Login() {
 				setPassword((prev) => ({ ...prev, error: "*not valid password" }));
 			}
 			setPassword((prev) => ({ ...prev, state: false }));
+			return false;
 		}
-	}
+	}, [password.pswd]);
 
-	function validateForm() {
-		validatePassword();
-		validateEmail();
+	const validateForm = useCallback(() => {
+		return validateEmail() && validatePassword();
+	}, [validateEmail, validatePassword]);
 
-		// return validateEmail() && validatePassword();
-	}
+	const redirectAfterLogin = useCallback(() => {
+		if (location.state !== null) {
+			navigate(location.state.from.pathname, {replace: true});							
+		} else {
+			navigate(location.pathname + location.search, { replace: true });
+		}
+	}, [location.pathname, location.search, location.state, navigate])
 
-	const handlerSubmit = useCallback((e) => {
-		e.preventDefault();
-	}, []);
+	const handlerSubmit = useCallback(
+		(e) => {
+			e.preventDefault();
+			if (validateForm()) {
+				login(email.mail, password.pswd)
+					.then((response) => {
+						setErrMessage("");
+						setEmail({ mail: "", error: "", state: true });
+						setPassword({
+							pswd: "",
+							error: "",
+							state: true,
+						});
+						const { token, ...user } = response;
+						setCookie("token", token, {
+							path: '/',
+							maxAge: 3600,
 
-	// const { setAuth } = useContext(UserContext);
-	// const handler = useCallback(() => {
-	// 	setAuth(true);
-	// 	navigate(location.state.from.pathname, {replace: true});
-	// }, [location.state.from.pathname, navigate, setAuth]);
+						});
+						setCookie("user", JSON.stringify(user), {
+							path: '/',
+							maxAge: 3600,							
+						});
+						setAuth(true);
+						redirectAfterLogin();
+					})
+					.catch((err) => {
+						if (err.response.status === 401) {
+							setErrMessage("Incorrect Login or Password");							
+						}
+					});
+			} else {
+				// setErrMessage("Incorrect Login or Password");
+			}
+		},
+		[email.mail, login, password.pswd, redirectAfterLogin, setAuth, setCookie, validateForm]
+	);
 
 	return (
 		<>
-			<form action="#" onSubmit={handlerSubmit} className={s.form}>
+			<form onSubmit={handlerSubmit} className={s.form}>
 				<span>the mark * indicating that the field is required</span>
 				<div className={s.input_block}>
 					<label htmlFor="login">Login*</label>
@@ -129,9 +174,12 @@ export function Login() {
 						}></Input>
 					<span>{password.state ? "" : password.error}</span>
 				</div>
-				<Button type="submit" className={s.btn} onClick={() => validateForm()}>
-					Login
-				</Button>
+				<div className={s.controls}>
+					<Button type="submit" className={s.btn}>
+						Login
+					</Button>
+					{errMessage && <div className={s.error_message}>{errMessage}</div>}
+				</div>
 			</form>
 			<div className={s.info}>
 				<div className={s.title}>Not Registered?</div>
@@ -143,9 +191,7 @@ export function Login() {
 						</li>
 					))}
 				</ul>
-				<Button className={s.btn}>
-					Register
-				</Button>
+				<Button className={s.btn} onClick={()=>switcher(false)}>Register</Button>
 			</div>
 		</>
 	);

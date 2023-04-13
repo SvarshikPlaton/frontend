@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import { useLocation, useNavigate } from "react-router";
 
 import s from "./AuthModal.module.scss";
@@ -9,6 +15,7 @@ import { UserContext } from "../../../context/UserContext";
 export function AuthModal() {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const { auth } = useContext(UserContext);
 
 	const [isOpen, setIsOpen] = useState(false);
 	const windowRef = useRef();
@@ -19,17 +26,18 @@ export function AuthModal() {
 		document.body.style.overflowY = "hidden";
 	}, []);
 	const hideModal = useCallback(() => {
+		setShowLoginForm(true);
 		setIsOpen(false);
 		document.body.style.overflowY = "auto";
 	}, []);
 
 	useEffect(() => {
-		if (location.hash.includes("auth")) {
+		if (location.hash.includes("auth") && !auth) {
 			showModal();
 		} else {
-			hideModal();
+			hideModal();			
 		}
-	}, [hideModal, location.hash, showModal]);
+	}, [auth, hideModal, location.hash, location.state, navigate, showModal]);
 
 	useEffect(() => {
 		const handleClickOutside = (e) => {
@@ -40,8 +48,6 @@ export function AuthModal() {
 		document.addEventListener("mousedown", handleClickOutside);
 		return () => document.removeEventListener("mousedown", handleClickOutside);
 	}, [hideModal, location.pathname, navigate]);
-
-	
 
 	return (
 		<div className={`${s.modal} ${isOpen ? s.show : s.hide}`}>
@@ -64,11 +70,15 @@ export function AuthModal() {
 						</div>
 						<button
 							className={s.close}
-							onClick={() => navigate(location.pathname + location.search, { replace: true })}>
+							onClick={() =>
+								navigate(location.pathname + location.search, { replace: true })
+							}>
 							&#215;
 						</button>
 					</div>
-					<div className={s.body}>{showLoginForm ? <Login /> : <Register />}</div>
+					<div className={s.body}>
+						{showLoginForm ? <Login switcher={ setShowLoginForm} /> : <Register switcher={ setShowLoginForm}/>}
+					</div>
 				</div>
 			</div>
 		</div>
