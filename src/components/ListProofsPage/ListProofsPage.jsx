@@ -9,7 +9,7 @@ export function ListProofsPage() {
     const [proofs, setProofs] = useState({});
 
     useEffect(() => {
-        TalentsService.getProofs().then((res) => setProofs(res));
+        TalentsService.getAllProofs().then((res) => setProofs(res));
     }, []);
 
     const filterByDateAsc = () => {

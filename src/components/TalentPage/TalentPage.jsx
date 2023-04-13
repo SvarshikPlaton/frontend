@@ -6,6 +6,7 @@ import { Button } from "../../shared/components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import linkedin from "../../shared/images/linkedin.svg";
 import github from "../../shared/images/github.svg";
+import userAvatar from "../../shared/images/user.png";
 import { TalentsService } from "../../services/api-services";
 import { TalentsContext } from "../../context/TalentsContext";
 import { useTalent } from "../../hooks/useTalent";
@@ -30,7 +31,7 @@ export function TalentPage() {
             </div>
             <div className={s.container}>
                 <div className={s.talent_data}>
-                    <img className={s.ava} src={talent.image} alt="avatar" />
+                    <img className={s.ava} src={talent.image ? talent.image : userAvatar} alt="avatar" />
                     <div>
                         <div className={s.name}>
                             {talent.first_name} {talent.last_name}

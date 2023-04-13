@@ -1,28 +1,48 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router";
-import { Layout } from "../Layout";
+import React, { useContext, useEffect, useState, useCallback } from "react";
+import { useLocation } from "react-router";
 import s from "./ProfilePage.module.scss";
 import { Button, Input, Textarea } from "../../shared/components";
+import userAvatar from "../../shared/images/user.png"
 import { useNavigate } from "react-router-dom";
 import linkedin from "../../shared/images/linkedin.svg";
 import github from "../../shared/images/github.svg";
 import { TalentsService } from "../../services/api-services";
-import { TalentsContext } from "../../context/TalentsContext";
 import edit from "./images/edit.svg";
-import axios from "axios";
 import { UserContext } from "../../context/UserContext";
 import { useCookies } from "react-cookie";
-import { useTalent } from "../../hooks/useTalent";
-import { AcceptingModal } from "./components/AcceptingModal/AcceptingModal";
+import { AcceptingModal } from "./components/AcceptingModal";
 
 export function ProfilePage() {
     const navigate = useNavigate();
     const location = useLocation();
+    const { user, token } = useContext(UserContext);
 
-    const { setAuth, user, token } = useContext(UserContext);
-    const { talent, isLoading } = useTalent(28);
+
+    const [profile, setProfile] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     const [editting, setEditting] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const showModal = useCallback(() => {
+		setModalIsOpen(true);
+		document.body.style.overflowY = "hidden";
+	}, []);
+
+    const hideModal = useCallback(() => {
+		setModalIsOpen(false);
+		document.body.style.overflowY = "auto";
+	}, []);
+
+    useEffect(()=>{
+        if(modalIsOpen){
+            showModal();
+        }else{
+            hideModal();
+        }
+    },[modalIsOpen]);
+    
     useEffect(() => {
         if (editting) {
             navigate(`${location.pathname}${location.search}#edit`, {
@@ -35,69 +55,85 @@ export function ProfilePage() {
         }
     }, [editting]);
 
-    const [profile, setProfile] = useState({
-        first_name: "Fedor",
-        last_name: "Egorov",
-        image: "https://cdn-icons-png.flaticon.com/512/6596/6596121.png",
-        specialization: "JS dev",
-        talents: ["dev", "hello", "hi there", "how are u", "wow"],
-        links: ["https://github.com/Ruslanchik01"],
-        bio: "hello world",
-        additional_info: "how are you today",
-        contacts: ["instagram.com", "facebook.com"],
-        password: "12345678",
-    });
+    useEffect(()=>{
+        setIsLoading(true);
+        if(user.id){
+            TalentsService.getTalent(user.id, token).then((response)=>{
+                setProfile(response);
+                setIsLoading(false);
+            }).catch((error) =>{
+                console.log(error);
+            })
+        }
+    }, [user.id, token])
 
     const [firstName, setFirstName] = useState({
-        name: profile.first_name,
+        name: "",
         error: "",
         state: true,
     });
     const [lastName, setLastName] = useState({
-        name: profile.last_name,
+        name: "",
         error: "",
         state: true,
     });
     const [specialization, setSpecialization] = useState({
-        spec: profile.specialization,
+        spec: "",
         error: "",
         state: true,
     });
     const [talents, setTalents] = useState({
-        talents: profile.talents.join("; "),
+        talents: "",
         error: "",
         state: true,
     });
     const [links, setLinks] = useState({
-        links: profile.links.join("; "),
+        links: "",
         error: "",
         state: true,
     });
     const [bio, setBio] = useState({
-        bio: profile.bio,
+        bio: "",
         error: "",
         state: true,
     });
     const [additionalInfo, setAdditionalInfo] = useState({
-        info: profile.additional_info,
+        info: "",
         error: "",
         state: true,
     });
     const [contacts, setContacts] = useState({
-        contacts: profile.contacts.join("; "),
+        contacts: "",
         error: "",
         state: true,
     });
-    const [password, setPassword] = useState({
-        pswd: "",
-        error: "",
-        state: true,
-    });
-    const [newPassword, setNewPassword] = useState({
-        pswd: "",
-        error: "",
-        state: true,
-    });
+    // const [password, setPassword] = useState({
+    //     pswd: "",
+    //     error: "",
+    //     state: true,
+    // });
+    // const [newPassword, setNewPassword] = useState({
+    //     pswd: "",
+    //     error: "",
+    //     state: true,
+    // });
+
+    useEffect(()=>{
+        if(Object.keys(profile).length !== 0){
+            setFirstName((prev)=>({...prev, name:profile?.first_name}));
+            setLastName((prev)=>({...prev, name:profile?.last_name}));
+            setSpecialization((prev)=>({...prev, spec:profile?.specialization}));
+            setTalents((prev)=>({...prev, talents: profile?.talents.join("; ")}));
+            setLinks((prev)=>({...prev, links: profile?.links.join("; ")}));
+            setBio((prev)=>({...prev, bio: profile?.bio ? profile?.bio : ""}));
+            setAdditionalInfo((prev)=>({...prev, info: profile?.additional_info ? profile?.additional_info :""}));
+            setContacts((prev)=>({...prev, contacts: profile?.contacts.join("; ") ? profile?.contacts.join("; ") :""}));
+        }
+    }, [profile]);
+
+    if (isLoading || !profile) {
+        return <></>;
+    }
 
     function validateFirstName() {
         const FIRST_NAME_REGEXP = /^[a-zA-Z'\s]{1,30}$/;
@@ -284,66 +320,66 @@ export function ProfilePage() {
         }
     }
 
-    function validatePassword() {
-        if (profile.password !== password.pswd && password.pswd.length !== 0) {
-            setPassword((prev) => ({
-                ...prev,
-                error: "*password doesn't equal to the previous one",
-            }));
-            setPassword((prev) => ({ ...prev, state: false }));
-            return false;
-        } else if (
-            newPassword.pswd.length !== 0 &&
-            password.pswd.length === 0
-        ) {
-            setPassword((prev) => ({ ...prev, error: "*empty field" }));
-            setPassword((prev) => ({ ...prev, state: false }));
-            return false;
-        } else {
-            setPassword((prev) => ({ ...prev, state: true }));
-            return true;
-        }
-    }
+    // function validatePassword() {
+    //     if (profile.password !== password.pswd && password.pswd.length !== 0) {
+    //         setPassword((prev) => ({
+    //             ...prev,
+    //             error: "*password doesn't equal to the previous one",
+    //         }));
+    //         setPassword((prev) => ({ ...prev, state: false }));
+    //         return false;
+    //     } else if (
+    //         newPassword.pswd.length !== 0 &&
+    //         password.pswd.length === 0
+    //     ) {
+    //         setPassword((prev) => ({ ...prev, error: "*empty field" }));
+    //         setPassword((prev) => ({ ...prev, state: false }));
+    //         return false;
+    //     } else {
+    //         setPassword((prev) => ({ ...prev, state: true }));
+    //         return true;
+    //     }
+    // }
 
-    function validateNewPassword() {
-        const NEW_PASSWORD_REGEXP = /^[a-zA-Z0-9]{8,}$/;
+    // function validateNewPassword() {
+    //     const NEW_PASSWORD_REGEXP = /^[a-zA-Z0-9]{8,}$/;
 
-        if (
-            (NEW_PASSWORD_REGEXP.test(String(newPassword.pswd).toLowerCase()) &&
-                newPassword.pswd !== password.pswd) ||
-            (newPassword.pswd.length === 0 && password.pswd.length === 0)
-        ) {
-            setNewPassword((prev) => ({ ...prev, state: true }));
-            return true;
-        } else {
-            if (newPassword.pswd.length === 0) {
-                setNewPassword((prev) => ({ ...prev, error: "*empty field" }));
-            } else if (
-                newPassword.pswd === password.pswd &&
-                newPassword.pswd.length !== 0
-            ) {
-                setNewPassword((prev) => ({
-                    ...prev,
-                    error: "*new password can't be equal to the previous one",
-                }));
-            } else if (
-                newPassword.pswd.length < 8 &&
-                newPassword.pswd.length !== 0
-            ) {
-                setNewPassword((prev) => ({
-                    ...prev,
-                    error: "*password should be more than or equal 8 symbols",
-                }));
-            } else if (!/^[a-zA-Z0-9]$/.test(newPassword.pswd)) {
-                setNewPassword((prev) => ({
-                    ...prev,
-                    error: "*you can use only latins letters and numbers",
-                }));
-            }
-            setNewPassword((prev) => ({ ...prev, state: false }));
-            return false;
-        }
-    }
+    //     if (
+    //         (NEW_PASSWORD_REGEXP.test(String(newPassword.pswd).toLowerCase()) &&
+    //             newPassword.pswd !== password.pswd) ||
+    //         (newPassword.pswd.length === 0 && password.pswd.length === 0)
+    //     ) {
+    //         setNewPassword((prev) => ({ ...prev, state: true }));
+    //         return true;
+    //     } else {
+    //         if (newPassword.pswd.length === 0) {
+    //             setNewPassword((prev) => ({ ...prev, error: "*empty field" }));
+    //         } else if (
+    //             newPassword.pswd === password.pswd &&
+    //             newPassword.pswd.length !== 0
+    //         ) {
+    //             setNewPassword((prev) => ({
+    //                 ...prev,
+    //                 error: "*new password can't be equal to the previous one",
+    //             }));
+    //         } else if (
+    //             newPassword.pswd.length < 8 &&
+    //             newPassword.pswd.length !== 0
+    //         ) {
+    //             setNewPassword((prev) => ({
+    //                 ...prev,
+    //                 error: "*password should be more than or equal 8 symbols",
+    //             }));
+    //         } else if (!/^[a-zA-Z0-9]$/.test(newPassword.pswd)) {
+    //             setNewPassword((prev) => ({
+    //                 ...prev,
+    //                 error: "*you can use only latins letters and numbers",
+    //             }));
+    //         }
+    //         setNewPassword((prev) => ({ ...prev, state: false }));
+    //         return false;
+    //     }
+    // }
 
     function normalizeArray(str) {
         if (str.trim().length === 0) {
@@ -366,7 +402,7 @@ export function ProfilePage() {
         return str;
     }
 
-    function validateAll() {
+    function save() {
         validateFirstName();
         validateLastName();
         validateSpecialization();
@@ -375,8 +411,7 @@ export function ProfilePage() {
         validateBio();
         validateAdditionalInfo();
         validateContacts();
-        validatePassword();
-        validateNewPassword();
+
         let isValid =
             validateFirstName() &&
             validateLastName() &&
@@ -385,11 +420,19 @@ export function ProfilePage() {
             validateLinks() &&
             validateBio() &&
             validateAdditionalInfo() &&
-            validateContacts() &&
-            validatePassword() &&
-            validateNewPassword();
+            validateContacts();
 
         if (isValid) {
+            const obj = {
+                first_name: firstName.name,
+                last_name: lastName.name,
+                specialization: specialization.spec,
+                talents: normalizeArray(talents.talents),
+                links: normalizeArray(links.links),
+                bio: normalizeString(bio.bio),
+                additional_info: normalizeString(additionalInfo.info),
+                contacts: normalizeArray(contacts.contacts),
+            }
             setProfile((prev) => ({
                 ...prev,
                 first_name: firstName.name,
@@ -401,46 +444,42 @@ export function ProfilePage() {
                 additional_info: normalizeString(additionalInfo.info),
                 contacts: normalizeArray(contacts.contacts),
             }));
-            if (newPassword.pswd.length !== 0) {
-                setProfile((prev) => ({
-                    ...prev,
-                    password: newPassword.pswd,
-                }));
+
+            try {
+                TalentsService.editTalent(user.id, obj, token)
+                    .then(() => {
+                        const newUser = {...user};
+                        for(let k in obj){
+                            if(user.hasOwnProperty(k)){
+                                newUser[k] = obj[k];
+                            }
+                        }
+                        setCookie("user", newUser, {
+							path: '/',
+							maxAge: 3600,
+						})
+                        setEditting(false);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            } catch (error) {
+                console.error(error);
             }
-            setPassword((prev) => ({ ...prev, pswd: "" }));
-            setNewPassword((prev) => ({ ...prev, pswd: "" }));
-            setEditting(false);
         }
     }
 
-    const deleteTalent = (id) => {
-        try {
-            TalentsService.deleteTalent(id, token)
-                .then(() => {
-                    removeCookie("token");
-                    removeCookie("user");
-                    navigate("/", { replace: true });
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-
-            console.log("Profile deleted successfully");
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     return (
         <>
+        <AcceptingModal isOpen={modalIsOpen} setIsOpen={setModalIsOpen} removeCookie={removeCookie} user={user} token={token}/>
             <div className={s.btns}>
-                <Button className={s.btn} onClick={() => console.log(profile)}>
+                <Button className={s.btn} onClick={() => navigate(-1)}>
                     Back
                 </Button>
             </div>
             <div className={s.container}>
                 <div className={s.talent_data}>
-                    <img className={s.ava} src={profile.image} alt="avatar" />
+                    <img className={s.ava} src={profile.image ? profile.image : userAvatar} alt="avatar" />
                     <div>
                         <div className={s.name}>
                             {editting ? (
@@ -705,7 +744,7 @@ export function ProfilePage() {
                             </ul>
                         )}
                     </div>
-                    {editting ? (
+                    {/* {editting ? (
                         <div className={s.passwords}>
                             <h3>Changing password :</h3>
                             <div className={s.input_block}>
@@ -750,7 +789,7 @@ export function ProfilePage() {
                         </div>
                     ) : (
                         ""
-                    )}
+                    )} */}
                     {editting ? (
                         <div className={s.btns}>
                             <Button
@@ -759,10 +798,10 @@ export function ProfilePage() {
                             >
                                 Cancel
                             </Button>
-                            <Button onClick={validateAll} className={s.btn}>
+                            <Button onClick={save} className={s.btn}>
                                 Save
                             </Button>
-                            <Button className={s.btn} onClick={() => {}}>
+                            <Button className={s.btn} onClick={() => {setModalIsOpen(true)}}>
                                 Delete profile
                             </Button>
                         </div>

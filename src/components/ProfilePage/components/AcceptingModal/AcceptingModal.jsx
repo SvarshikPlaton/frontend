@@ -1,20 +1,74 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import s from "./AcceptingModal.module.scss";
 import { Button } from "../../../../shared/components";
+import { useNavigate } from "react-router-dom";
+import { TalentsService } from "../../../../services/api-services";
 
-export function AcceptingModal() {
-    const [isClosed, setIsClose] = useState(true);
+export function AcceptingModal({
+    isOpen,
+    setIsOpen,
+    removeCookie,
+    user,
+    token,
+}) {
+    const navigate = useNavigate();
+    const window = useRef();
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (!window.current.contains(e.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
+    }, [setIsOpen]);
+
+    const deleteTalent = (id) => {
+        try {
+            TalentsService.deleteTalent(id, token)
+                .then(() => {
+                    removeCookie("token");
+                    removeCookie("user");
+                    navigate("/", { replace: true });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
-        <div className={`${s.modal} ${isClosed ? s.hide : s.show}`}>
-            <div className={s.block_modal}>
-                <button className={s.close}>x</button>
+        <div className={`${s.modal} ${isOpen ? s.show : s.hide}`}>
+            <div
+                ref={window}
+                className={`${s.block_modal} ${isOpen ? s.show : s.hide}`}
+            >
+                <div className={s.header}>
+                    <button
+                        className={s.close}
+                        onClick={() => setIsOpen(false)}
+                    >
+                        &#215;
+                    </button>
+                </div>
                 <div className={s.body}>
                     <p>Are you sure to delete account forever? </p>
                 </div>
                 <div className={s.btns}>
-                    <Button className={s.btn}>Yes, I want</Button>
-                    <Button className={s.btn}>No, I don't</Button>
+                    <Button
+                        className={s.btn}
+                        onClick={() => {
+                            deleteTalent(user.id);
+                        }}
+                    >
+                        Yes, I want
+                    </Button>
+                    <Button className={s.btn} onClick={() => setIsOpen(false)}>
+                        No, I don't
+                    </Button>
                 </div>
             </div>
         </div>

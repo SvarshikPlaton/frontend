@@ -1,7 +1,9 @@
 .modal {
     position: fixed;
-    width: 100%;
-    height: 100%;
+    top: 0;
+    left: 0;
+    width: 99.5vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,6 +30,7 @@
     overflow: hidden;
     box-shadow: 4px 4px 16px rgba(185, 145, 250, 0.8);
     transition: all 0.2s ease;
+    padding: 15px;
     &.show {
         transform: translate(0%, 0%);
     }
@@ -36,13 +39,17 @@
     }
 }
 
+.header{
+    display: flex;
+    justify-content: flex-end;
+}
+
 .close {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 32px;
     height: 32px;
-    margin-right: 10px;
     border-radius: 50%;
     font-family: "Courier New", Courier, monospace;
     font-size: 36px;
@@ -55,12 +62,15 @@
 }
 
 .body {
-    display: grid;
-    max-width: 800px;
-    // grid-template-columns: auto minmax(auto, 400px);
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
-    padding: 40px 32px;
-    // gap: 64px;
-    gap: 40px;
+    color: white;
+    padding: 0 10px 15px 10px;
+}
+
+.btns{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.btn{
+    padding: 5px 10px;
 }
