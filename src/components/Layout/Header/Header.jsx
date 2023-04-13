@@ -6,64 +6,71 @@ import { UserContext } from "../../../context/UserContext";
 import { useCookies } from "react-cookie"; // temp
 
 export function Header() {
-	const navigate = useNavigate();
-	const location = useLocation();
-	const editPath = useCallback(() => {
-		return location.pathname + location.search + "#auth";
-	}, [location]);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const editPath = useCallback(() => {
+        return location.pathname + location.search + "#auth";
+    }, [location]);
 
-	const { auth, user } = useContext(UserContext);
-	const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
+    const { auth, user } = useContext(UserContext);
+    const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
 
-	const menuItems = useMemo(
-		() => [
-			{ title: "Home", link: "/" },
-			{ title: "Talents", link: "/talents" },
-			// { title: "Proofs", link: "/proofs" },
-		],
-		[]
-	);
+    const menuItems = useMemo(
+        () => [
+            { title: "Home", link: "/" },
+            { title: "Talents", link: "/talents" },
+            // { title: "Proofs", link: "/proofs" },
+        ],
+        []
+    );
 
-	return (
-		<header className={s.header}>
-			<div className="__container">
-				<Link to="/" className={s.logo}>
-					Proved<span>Code</span>
-				</Link>
-				<nav className={s.nav}>
-					{menuItems.map(({ title, link }, index) => (
-						<NavLink
-							to={link}
-							key={index}
-							className={({ isActive }) => {
-								return isActive ? s.active : "";
-							}}>
-							{title}
-						</NavLink>
-					))}
-				</nav>
-				<div className={s.btns}>
-					{!auth ? (
-						<Button
-							className={s.btn}
-							onClick={() => navigate(editPath(), { replace: true })}>
-							Login / Register
-						</Button>
-					) : (
-						<>
-								<Link to="/profile" className={s.username}>{ user && user.first_name + " " + user.last_name }</Link>
-							<Button
-								className={s.btn}
-									onClick={() => {
-										removeCookie("token");
-										removeCookie("user");
-									}}>
-								Log Out
-							</Button>
-						</>
-					)}
-				</div>
-			</div>
-		</header>
-	);
+    return (
+        <header className={s.header}>
+            <div className="__container">
+                <Link to="/" className={s.logo}>
+                    Proved<span>Code</span>
+                </Link>
+                <nav className={s.nav}>
+                    {menuItems.map(({ title, link }, index) => (
+                        <NavLink
+                            to={link}
+                            key={index}
+                            className={({ isActive }) => {
+                                return isActive ? s.active : "";
+                            }}
+                        >
+                            {title}
+                        </NavLink>
+                    ))}
+                </nav>
+                <div className={s.btns}>
+                    {!auth ? (
+                        <Button
+                            className={s.btn}
+                            onClick={() =>
+                                navigate(editPath(), { replace: true })
+                            }
+                        >
+                            Login / Register
+                        </Button>
+                    ) : (
+                        <>
+                            <Link to="/profile" className={s.username}>
+                                {user && user.first_name + " " + user.last_name}
+                            </Link>
+                            <Button
+                                className={s.btn}
+                                onClick={() => {
+                                    removeCookie("token");
+                                    removeCookie("user");
+                                }}
+                            >
+                                Log Out
+                            </Button>
+                        </>
+                    )}
+                </div>
+            </div>
+        </header>
+    );
 }

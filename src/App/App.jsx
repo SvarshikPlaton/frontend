@@ -16,12 +16,13 @@ export function App() {
                     index
                     element={<Navigate to="/talents" replace={true} />}
                 />
-                <Route path="talents" element={<TalentsListPage />} />                
+                <Route path="talents" element={<TalentsListPage />} />
                 {/* <Route path="proofs" element={<ListProofsPage />} /> */}
 
                 <Route element={<RequireAuth redirect={"/talents"} />}>
                     <Route path="talents/:id" element={<TalentPage />} />
                 </Route>
+                <Route path="profile" element={<ProfilePage />} />
                 <Route path="*" element={<NotFoundPage />} />
             </Route>
         </Routes>

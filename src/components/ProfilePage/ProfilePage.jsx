@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { Layout } from "../Layout";
 import s from "./ProfilePage.module.scss";
 import { Button, Input, Textarea } from "../../shared/components";
@@ -9,13 +9,20 @@ import github from "../../shared/images/github.svg";
 import { TalentsService } from "../../services/api-services";
 import { TalentsContext } from "../../context/TalentsContext";
 import edit from "./images/edit.svg";
+import axios from "axios";
+import { UserContext } from "../../context/UserContext";
+import { useCookies } from "react-cookie";
+import { useTalent } from "../../hooks/useTalent";
+import { AcceptingModal } from "./components/AcceptingModal/AcceptingModal";
 
 export function ProfilePage() {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const { setAuth, user, token } = useContext(UserContext);
+    const { talent, isLoading } = useTalent(28);
     const [editting, setEditting] = useState(false);
-
+    const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
     useEffect(() => {
         if (editting) {
             navigate(`${location.pathname}${location.search}#edit`, {
@@ -406,6 +413,24 @@ export function ProfilePage() {
         }
     }
 
+    const deleteTalent = (id) => {
+        try {
+            TalentsService.deleteTalent(id, token)
+                .then(() => {
+                    removeCookie("token");
+                    removeCookie("user");
+                    navigate("/", { replace: true });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+
+            console.log("Profile deleted successfully");
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <>
             <div className={s.btns}>
@@ -737,17 +762,15 @@ export function ProfilePage() {
                             <Button onClick={validateAll} className={s.btn}>
                                 Save
                             </Button>
+                            <Button className={s.btn} onClick={() => {}}>
+                                Delete profile
+                            </Button>
                         </div>
                     ) : (
                         ""
                     )}
                 </div>
             </div>
-            {/* <div className={s.proofs}>
-                <div className={s.info}>
-                    <h3>Proof:</h3>
-                </div>
-            </div> */}
         </>
     );
 }
