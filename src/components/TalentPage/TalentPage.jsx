@@ -1,11 +1,15 @@
 import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router";
+import { Layout } from "../Layout";
 import s from "./TalentPage.module.scss";
 import { Button } from "../../shared/components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import linkedin from "../../shared/images/linkedin.svg";
 import github from "../../shared/images/github.svg";
+import { TalentsService } from "../../services/api-services";
+import { TalentsContext } from "../../context/TalentsContext";
 import { useTalent } from "../../hooks/useTalent";
+import { ProofBlock } from "./components/ListProofs/components/ProofBlock/ProofBlock";
 import { ListProofs } from "./components/ListProofs/ListProofs";
 
 export function TalentPage() {
@@ -27,7 +31,7 @@ export function TalentPage() {
             <div className={s.container}>
                 <div className={s.talent_data}>
                     <img className={s.ava} src={talent.image} alt="avatar" />
-                    <div className={s.talent}>
+                    <div>
                         <div className={s.name}>
                             {talent.first_name} {talent.last_name}
                         </div>

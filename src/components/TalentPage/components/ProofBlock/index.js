@@ -1,1 +1,0 @@
-import { ProofBlock } from "./ProofBlock";
