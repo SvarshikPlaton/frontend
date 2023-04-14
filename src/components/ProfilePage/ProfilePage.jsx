@@ -24,24 +24,6 @@ export function ProfilePage() {
     const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-
-    const showModal = useCallback(() => {
-		setModalIsOpen(true);
-		document.body.style.overflowY = "hidden";
-	}, []);
-
-    const hideModal = useCallback(() => {
-		setModalIsOpen(false);
-		document.body.style.overflowY = "auto";
-	}, []);
-
-    useEffect(()=>{
-        if(modalIsOpen){
-            showModal();
-        }else{
-            hideModal();
-        }
-    },[modalIsOpen]);
     
     useEffect(() => {
         if (editting) {
@@ -129,7 +111,8 @@ export function ProfilePage() {
             setAdditionalInfo((prev)=>({...prev, info: profile?.additional_info ? profile?.additional_info :""}));
             setContacts((prev)=>({...prev, contacts: profile?.contacts.join("; ") ? profile?.contacts.join("; ") :""}));
         }
-    }, [profile]);
+    }, [profile, editting]);
+    
 
     if (isLoading || !profile) {
         return <></>;

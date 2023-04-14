@@ -7,11 +7,19 @@ import { UserContext } from "../../../../../../context/UserContext/UserContext";
 import { TalentsContext } from "../../../../../../context/TalentsContext";
 
 export function TalentCard({ talent }) {
-    const { auth } = useContext(UserContext);
+    const { auth, user } = useContext(UserContext);
+
+    const editPath = useCallback(()=>{
+        if(user.id === talent.id){
+            return "/profile"
+        }else{
+            return `/talents/${talent.id}`;
+        }
+    },[])
 
     return (
         <Link
-            to={`/talents/${talent.id}`}
+            to={editPath()}
             state={{ redirect: `/talents/${talent.id}` }}
             className={s.talent_card}
         >

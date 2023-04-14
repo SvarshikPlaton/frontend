@@ -14,21 +14,13 @@ export const TalentsService = {
 			const response = await axiosInstance.get(
 				`talents?page=${page}&size=${size}`
 			);
-			return response?.data?.content;
+			return response?.data;
 		} catch (error) {
 			console.log(error);
 			return [];
 		}
 	},
-	async getCountOfPages() {
-		try {
-			const response = await axiosInstance.get(`talents`);
-			return response?.data?.total_pages;
-		} catch (error) {
-			console.log(error);
-			return 0;
-		}
-	},
+
 	async getTalent(id, token) {
 		const headers = {
 			Authorization: `Bearer ${token}`,

@@ -17,7 +17,7 @@ export function Header() {
 
 	const menuItems = useMemo(
 		() => [
-			{ title: "Home", link: "/" },
+			// { title: "Home", link: "/" },
 			{ title: "Talents", link: "/talents" },
 			{ title: "Proofs", link: "/proofs" },
 		],

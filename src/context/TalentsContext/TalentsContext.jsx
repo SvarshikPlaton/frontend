@@ -22,31 +22,23 @@ export function TalentsProvider({ children }) {
     const [size, setSize] = useState(5);
     const [countOfPages, setCountOfPages] = useState(0);
 
-    const { getTalents, getCountOfPages } = TalentsService;
+    const { getTalents } = TalentsService;
 
     useEffect(() => {
         setIsLoading(true);
         try {
-            getTalents(page, size).then((talents) => {
-                setTalents(talents);
+            getTalents(page, size).then((response) => {
+                setTalents(response.content);
+                setCountOfPages(response.total_pages); 
                 setIsLoading(false);
             });
+            
         } catch (error) {
             setIsLoading(false);
             console.log(error);
             setTalents(data.content);
         }
-    }, [getTalents, page, size]);
-
-    useEffect(() => {
-        try {
-            getCountOfPages().then((count) => {
-                setCountOfPages(count);
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    }, [getCountOfPages]);
+    }, [ getTalents, page, size]);
 
     const talentsValue = useMemo(
         () => ({

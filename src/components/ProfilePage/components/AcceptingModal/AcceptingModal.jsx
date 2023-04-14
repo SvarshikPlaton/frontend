@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import s from "./AcceptingModal.module.scss";
 import { Button } from "../../../../shared/components";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +24,24 @@ export function AcceptingModal({
             document.removeEventListener("mousedown", handleClickOutside);
     }, [setIsOpen]);
 
+    const showModal = useCallback(() => {
+		setIsOpen(true);
+		document.body.style.overflowY = "hidden";
+	}, []);
+
+    const hideModal = useCallback(() => {
+		setIsOpen(false);
+		document.body.style.overflowY = "auto";
+	}, []);
+
+    useEffect(()=>{
+        if(isOpen){
+            showModal();
+        }else{
+            hideModal();
+        }
+    },[isOpen]);
+
     const deleteTalent = (id) => {
         try {
             TalentsService.deleteTalent(id, token)
@@ -47,6 +65,7 @@ export function AcceptingModal({
                 className={`${s.block_modal} ${isOpen ? s.show : s.hide}`}
             >
                 <div className={s.header}>
+                    <span>Deleting</span>
                     <button
                         className={s.close}
                         onClick={() => setIsOpen(false)}
@@ -55,7 +74,7 @@ export function AcceptingModal({
                     </button>
                 </div>
                 <div className={s.body}>
-                    <p>Are you sure to delete account forever? </p>
+                    <p>Are you sure you want to delete your account permanently?</p>
                 </div>
                 <div className={s.btns}>
                     <Button
