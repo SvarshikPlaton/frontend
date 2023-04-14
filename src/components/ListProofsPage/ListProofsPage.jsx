@@ -30,10 +30,10 @@ export function ListProofsPage() {
         <div>
             <div className={s.buttons}>
                 <Button className={s.button} onClick={filterByDateDesc}>
-                    Sort by date: descending
+                    Sort by date: ascending
                 </Button>
                 <Button className={s.button} onClick={filterByDateAsc}>
-                    Sort by date: ascending
+                    Sort by date: descending
                 </Button>
             </div>
 
