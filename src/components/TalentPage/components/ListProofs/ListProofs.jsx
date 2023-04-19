@@ -1,9 +1,9 @@
-import { ProofBlock } from "./components/ProofBlock/ProofBlock";
+import { ProofBlock } from "./components/ProofBlock";
 import { TalentsService } from "../../../../services/api-services";
 import { useTalent } from "../../../../hooks/useTalent";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../context/UserContext";
-
+import s from "./ListProofs.module.scss";
 export function ListProofs({ id }) {
     const [talentsProofs, setTalentsProofs] = useState([]);
     const { token } = useContext(UserContext);
@@ -17,17 +17,25 @@ export function ListProofs({ id }) {
     }, []);
 
     return (
-        <div>
-            {talentsProofs.map((el) => {
-                return (
-                    <ProofBlock
-                        key={el.id}
-                        link={el.link}
-                        text={el.text}
-                        created={el.created}
-                    />
-                );
-            })}
-        </div>
+        <>
+            {talentsProofs.length > 0 ? (
+                <div>
+                    {talentsProofs.map((el) => {
+                        return (
+                            <ProofBlock
+                                key={el.id}
+                                link={el.link}
+                                text={el.text}
+                                created={el.created}
+                            />
+                        );
+                    })}
+                </div>
+            ) : (
+                <span>
+                    <div className={s.no_proofs}>No proofs yet!</div>
+                </span>
+            )}
+        </>
     );
 }

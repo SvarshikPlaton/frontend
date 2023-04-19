@@ -5,17 +5,19 @@ export function ProofBlock({ link, text, created }) {
         <div className={s.out}>
             <div className={s.proofs}>
                 <div className={s.info}>
-                    <h3>Proof:</h3>
-                    <div>{link}</div>
+                    <h1>Proof:</h1>
+                    <a className={s.link} href={link}>
+                        Click to know me more
+                    </a>
                     <div className={s.proof_description}>
                         <div className={s.title}>Description:</div>
                         {text}
                     </div>
                 </div>
                 <div className={s.date}>
-                    <div className={s.created}>
-                        Published: {created.split(" ")[0]}
-                    </div>
+                    <b className={s.created}>
+                        Created: {created.split(" ")[0]}
+                    </b>
                 </div>
             </div>
         </div>

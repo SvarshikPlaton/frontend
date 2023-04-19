@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
 import s from "./ProfilePage.module.scss";
 import { Button, Input, Textarea } from "../../shared/components";
-import userAvatar from "../../shared/images/user.png"
+import userAvatar from "../../shared/images/user.png";
 import { useNavigate } from "react-router-dom";
 import linkedin from "../../shared/images/linkedin.svg";
 import github from "../../shared/images/github.svg";
@@ -12,19 +12,49 @@ import { UserContext } from "../../context/UserContext";
 import { useCookies } from "react-cookie";
 import { AcceptingModal } from "./components/AcceptingModal";
 
+import { ListProofs } from "../TalentPage/components/ListProofs";
+
 export function ProfilePage() {
+    const content = [
+        // {
+        //     id: 0,
+        //     link: "string",
+        //     text: "string",
+        //     status: "DRAFT",
+        //     created: "string",
+        // },
+        // {
+        //     id: 1,
+        //     link: "string",
+        //     text: "string",
+        //     status: "DRAFT",
+        //     created: "string",
+        // },
+        // {
+        //     id: 2,
+        //     link: "string",
+        //     text: "string",
+        //     status: "DRAFT",
+        //     created: "string",
+        // },
+        // {
+        //     id: 3,
+        //     link: "string",
+        //     text: "string",
+        //     status: "DRAFT",
+        //     created: "string",
+        // },
+    ];
     const navigate = useNavigate();
     const location = useLocation();
     const { user, token } = useContext(UserContext);
-
-
     const [profile, setProfile] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [editting, setEditting] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    
+
     useEffect(() => {
         if (editting) {
             navigate(`${location.pathname}${location.search}#edit`, {
@@ -37,17 +67,20 @@ export function ProfilePage() {
         }
     }, [editting]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setIsLoading(true);
-        if(user.id){
-            TalentsService.getTalent(user.id, token).then((response)=>{
-                setProfile(response);
-                setIsLoading(false);
-            }).catch((error) =>{
-                console.log(error);
-            })
+        if (user.id) {
+            TalentsService.getTalent(user.id, token)
+                .then((response) => {
+                    setProfile(response);
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            console.log(user.id);
         }
-    }, [user.id, token])
+    }, [user.id, token]);
 
     const [firstName, setFirstName] = useState({
         name: "",
@@ -100,19 +133,35 @@ export function ProfilePage() {
     //     state: true,
     // });
 
-    useEffect(()=>{
-        if(Object.keys(profile).length !== 0){
-            setFirstName((prev)=>({...prev, name:profile?.first_name}));
-            setLastName((prev)=>({...prev, name:profile?.last_name}));
-            setSpecialization((prev)=>({...prev, spec:profile?.specialization}));
-            setTalents((prev)=>({...prev, talents: profile?.talents.join("; ")}));
-            setLinks((prev)=>({...prev, links: profile?.links.join("; ")}));
-            setBio((prev)=>({...prev, bio: profile?.bio ? profile?.bio : ""}));
-            setAdditionalInfo((prev)=>({...prev, info: profile?.additional_info ? profile?.additional_info :""}));
-            setContacts((prev)=>({...prev, contacts: profile?.contacts.join("; ") ? profile?.contacts.join("; ") :""}));
+    useEffect(() => {
+        if (Object.keys(profile).length !== 0) {
+            setFirstName((prev) => ({ ...prev, name: profile?.first_name }));
+            setLastName((prev) => ({ ...prev, name: profile?.last_name }));
+            setSpecialization((prev) => ({
+                ...prev,
+                spec: profile?.specialization,
+            }));
+            setTalents((prev) => ({
+                ...prev,
+                talents: profile?.talents.join("; "),
+            }));
+            setLinks((prev) => ({ ...prev, links: profile?.links.join("; ") }));
+            setBio((prev) => ({
+                ...prev,
+                bio: profile?.bio ? profile?.bio : "",
+            }));
+            setAdditionalInfo((prev) => ({
+                ...prev,
+                info: profile?.additional_info ? profile?.additional_info : "",
+            }));
+            setContacts((prev) => ({
+                ...prev,
+                contacts: profile?.contacts.join("; ")
+                    ? profile?.contacts.join("; ")
+                    : "",
+            }));
         }
     }, [profile, editting]);
-    
 
     if (isLoading || !profile) {
         return <></>;
@@ -415,7 +464,7 @@ export function ProfilePage() {
                 bio: normalizeString(bio.bio),
                 additional_info: normalizeString(additionalInfo.info),
                 contacts: normalizeArray(contacts.contacts),
-            }
+            };
             setProfile((prev) => ({
                 ...prev,
                 first_name: firstName.name,
@@ -431,16 +480,16 @@ export function ProfilePage() {
             try {
                 TalentsService.editTalent(user.id, obj, token)
                     .then(() => {
-                        const newUser = {...user};
-                        for(let k in obj){
-                            if(user.hasOwnProperty(k)){
+                        const newUser = { ...user };
+                        for (let k in obj) {
+                            if (user.hasOwnProperty(k)) {
                                 newUser[k] = obj[k];
                             }
                         }
                         setCookie("user", newUser, {
-							path: '/',
-							maxAge: 3600,
-						})
+                            path: "/",
+                            maxAge: 3600,
+                        });
                         setEditting(false);
                     })
                     .catch((error) => {
@@ -454,15 +503,28 @@ export function ProfilePage() {
 
     return (
         <>
-        <AcceptingModal isOpen={modalIsOpen} setIsOpen={setModalIsOpen} removeCookie={removeCookie} user={user} token={token}/>
+            <AcceptingModal
+                isOpen={modalIsOpen}
+                setIsOpen={setModalIsOpen}
+                removeCookie={removeCookie}
+                user={user}
+                token={token}
+            />
             <div className={s.btns}>
-                <Button className={s.btn} onClick={() => navigate(-1)}>
+                <Button
+                    className={s.btn}
+                    onClick={() => /*navigate(-1)*/ console.log(editting)}
+                >
                     Back
                 </Button>
             </div>
             <div className={s.container}>
                 <div className={s.talent_data}>
-                    <img className={s.ava} src={profile.image ? profile.image : userAvatar} alt="avatar" />
+                    <img
+                        className={s.ava}
+                        src={profile.image ? profile.image : userAvatar}
+                        alt="avatar"
+                    />
                     <div>
                         <div className={s.name}>
                             {editting ? (
@@ -637,7 +699,12 @@ export function ProfilePage() {
                         src={edit}
                         alt="edit"
                         className={s.edit}
-                        onClick={() => setEditting(() => !editting)}
+                        onClick={
+                            () =>
+                                console.log(
+                                    editting
+                                ) /*setEditting(() => !editting)*/
+                        }
                     />
                     <div className={s.ab_title}>about</div>
 
@@ -784,7 +851,12 @@ export function ProfilePage() {
                             <Button onClick={save} className={s.btn}>
                                 Save
                             </Button>
-                            <Button className={s.btn} onClick={() => {setModalIsOpen(true)}}>
+                            <Button
+                                className={s.btn}
+                                onClick={() => {
+                                    setModalIsOpen(true);
+                                }}
+                            >
                                 Delete profile
                             </Button>
                         </div>
@@ -793,6 +865,14 @@ export function ProfilePage() {
                     )}
                 </div>
             </div>
+
+            {user.id ? (
+                <ListProofs id={user.id} />
+            ) : (
+                <span>
+                    <div className={s.no_proofs}>Something went wrong</div>
+                </span>
+            )}
         </>
     );
 }

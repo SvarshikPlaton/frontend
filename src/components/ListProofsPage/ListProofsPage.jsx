@@ -1,7 +1,7 @@
 import { TalentsService } from "../../services/api-services";
 import { useState } from "react";
 import { useEffect } from "react";
-import { ProofBlock } from "../TalentPage/components/ListProofs/components/ProofBlock/ProofBlock";
+import { ProofBlock } from "../TalentPage/components/ListProofs/components/ProofBlock";
 import { Button } from "../../shared/components";
 import s from "./ListProofsPage.module.scss";
 

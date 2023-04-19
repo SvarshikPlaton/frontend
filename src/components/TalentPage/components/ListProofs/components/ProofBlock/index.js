@@ -1,1 +1,1 @@
-import { ProofBlock } from "./ProofBlock";
+export { ProofBlock } from "./ProofBlock";

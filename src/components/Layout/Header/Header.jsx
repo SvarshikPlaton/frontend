@@ -15,14 +15,14 @@ export function Header() {
     const { auth, user } = useContext(UserContext);
     const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
 
-	const menuItems = useMemo(
-		() => [
-			// { title: "Home", link: "/" },
-			{ title: "Talents", link: "/talents" },
-			{ title: "Proofs", link: "/proofs" },
-		],
-		[]
-	);
+    const menuItems = useMemo(
+        () => [
+            // { title: "Home", link: "/" },
+            { title: "Talents", link: "/talents" },
+            { title: "Proofs", link: "/proofs" },
+        ],
+        []
+    );
 
     return (
         <header className={s.header}>
@@ -63,7 +63,7 @@ export function Header() {
                                 onClick={() => {
                                     removeCookie("token");
                                     removeCookie("user");
-									navigate("/", {replace: true});
+                                    navigate("/", { replace: true });
                                 }}
                             >
                                 Log Out
