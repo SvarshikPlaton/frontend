@@ -104,14 +104,14 @@ export const TalentsService = {
             return error;
         }
     },
-    async editTalent(id, edittedUser, token) {
+    async editTalent(id, editedUser, token) {
         const headers = {
             Authorization: `Bearer ${token}`,
         };
         try {
             const response = await axiosInstance.patch(
                 `talents/${id}`,
-                edittedUser,
+                editedUser,
                 {
                     headers,
                 }
@@ -120,7 +120,7 @@ export const TalentsService = {
             return response;
         } catch (error) {
             console.log(error);
-            return error;
+            throw error;
         }
     },
     async deleteTalent(id, token) {

@@ -6,7 +6,7 @@ export function ProofBlock({ link, text, created }) {
             <div className={s.proofs}>
                 <div className={s.info}>
                     <h1>Proof:</h1>
-                    <a className={s.link} href={link}>
+                    <a className={s.link} href={link} target="_blank">
                         Click to know me more
                     </a>
                     <div className={s.proof_description}>
