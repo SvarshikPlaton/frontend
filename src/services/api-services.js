@@ -132,4 +132,17 @@ export const TalentsService = {
         });
         return response;
     },
+    async addProof(proof, id, token) {
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+        const response = await axiosInstance.post(
+            `talents/${id}/proofs`,
+            proof,
+            {
+                headers,
+            }
+        );
+        return response;
+    },
 };

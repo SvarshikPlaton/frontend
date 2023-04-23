@@ -10,6 +10,7 @@ import { AcceptingModal } from "./components/AcceptingModal";
 import { TalentData } from "./components/TalentData/TalentData";
 import { About } from "./components/About";
 import { ListProofs } from "../TalentPage/components/ListProofs";
+import { AddingProofsForm } from "./components/AddingProofsForm/AddingProofsForm";
 
 export function ProfilePage() {
     const navigate = useNavigate();
@@ -106,15 +107,28 @@ export function ProfilePage() {
         if (Object.keys(profile).length !== 0) {
             setFirstName({ name: profile?.first_name, error: "", state: true });
             setLastName({ name: profile?.last_name, error: "", state: true });
-            setSpecialization({ spec: profile?.specialization, error: "", state: true});
-            setTalent({ talent: "", error: "", state: true});
+            setSpecialization({
+                spec: profile?.specialization,
+                error: "",
+                state: true,
+            });
+            setTalent({ talent: "", error: "", state: true });
             setAllTalents(profile?.talents);
             setLinks(
                 profile?.links.length !== 0
-                    ? profile?.links.map((el, index) => ({ id: index, link: el, error: "", state: true }))
+                    ? profile?.links.map((el, index) => ({
+                          id: index,
+                          link: el,
+                          error: "",
+                          state: true,
+                      }))
                     : [{ id: 1, link: "", error: "", state: true }]
             );
-            setBio({ bio: profile?.bio ? profile?.bio : "", error: "", state: true});
+            setBio({
+                bio: profile?.bio ? profile?.bio : "",
+                error: "",
+                state: true,
+            });
             setAdditionalInfo({
                 info: profile?.additional_info ? profile?.additional_info : "",
                 error: "",
@@ -160,7 +174,8 @@ export function ProfilePage() {
     function save() {
         talentDataRef.current?.validate();
         aboutRef.current?.validate();
-        let isValid = talentDataRef.current?.validate() && aboutRef.current?.validate();
+        let isValid =
+            talentDataRef.current?.validate() && aboutRef.current?.validate();
 
         if (isValid) {
             const obj = {
@@ -168,7 +183,9 @@ export function ProfilePage() {
                 last_name: lastName.name,
                 specialization: specialization.spec,
                 talents: allTalents,
-                links: links.map((el) => el.link).filter((el) => el.trim().length !== 0),
+                links: links
+                    .map((el) => el.link)
+                    .filter((el) => el.trim().length !== 0),
                 bio: normalizeString(bio.bio),
                 additional_info: normalizeString(additionalInfo.info),
                 contacts: normalizeContacts(contacts.contacts),
@@ -184,9 +201,13 @@ export function ProfilePage() {
                             last_name: lastName.name,
                             specialization: specialization.spec,
                             talents: allTalents,
-                            links: links.map((el) => el.link).filter((el) => el.trim().length !== 0),
+                            links: links
+                                .map((el) => el.link)
+                                .filter((el) => el.trim().length !== 0),
                             bio: normalizeString(bio.bio),
-                            additional_info: normalizeString(additionalInfo.info),
+                            additional_info: normalizeString(
+                                additionalInfo.info
+                            ),
                             contacts: normalizeContacts(contacts.contacts),
                         }));
                         setEditting(false);
@@ -250,7 +271,9 @@ export function ProfilePage() {
                 <TalentData {...propsTalentData} ref={talentDataRef} />
                 <About {...propsAbout} ref={aboutRef} />
             </div>
-
+            <div className={s.proofs_side}>
+                <AddingProofsForm user={user} token={token} />
+            </div>
             {user.id ? (
                 <ListProofs id={user.id} />
             ) : (
