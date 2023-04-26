@@ -1,21 +1,34 @@
-import { useState } from "react";
+
+import { useContext, useState } from "react";
 import { Button, Input, Textarea } from "../../../../shared/components";
 import { TalentsService } from "../../../../services/api-services";
+import { UserContext } from "../../../../context/UserContext";
 import s from "./AddingProofsForm.module.scss";
 import plus from "../../../../shared/images/plus.svg";
+
+
 export function AddingProofsForm({ user, token }) {
     const [activeProofs, setActiveProofs] = useState(false);
     const [link, setLink] = useState("");
     const [text, setText] = useState("");
-    const [talentsProofs, setTalentsProofs] = useState([]);
+
+
+    const { setTalentsProofs } = useContext(UserContext);
     function handle(e) {
         e.preventDefault();
         const proof = { link, text };
+
         TalentsService.addProof(proof, user.id, token)
+
             .then(() => {
-                if (text !== "") {
-                    setTalentsProofs((prev) => [...prev, proof]);
-                }
+                TalentsService.getProofs(user.id, token)
+                    .then((proofs) => {
+                        setTalentsProofs(proofs);
+                    })
+
+                    .catch((err) => console.log(err));
+
+
                 setActiveProofs(false);
                 setLink("");
                 setText("");

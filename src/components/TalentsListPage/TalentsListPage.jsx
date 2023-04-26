@@ -6,18 +6,22 @@ import { useSearchParams } from "react-router-dom";
 import { ListProofs } from "../TalentPage/components/ListProofs/ListProofs";
 
 export function TalentsListPage() {
-    const { talents, page, setPage, size, setSize, countOfPages} =
+    const { talents, page, setPage, size, setSize, countOfPages } =
         useContext(TalentsContext);
     const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         if (searchParams.has("page") && searchParams.has("size")) {
-            if (Number(searchParams.get("page")) < 0 || Number(searchParams.get("page")) > countOfPages || Number(searchParams.get("size")) <= 0) {
+            if (
+                Number(searchParams.get("page")) < 0 ||
+                Number(searchParams.get("page")) > countOfPages ||
+                Number(searchParams.get("size")) <= 0
+            ) {
                 let sParams = {};
                 sParams.page = page;
                 sParams.size = size;
                 setSearchParams(sParams, { replace: true });
-            }else{
+            } else {
                 setPage(Number(searchParams.get("page")));
                 setSize(Number(searchParams.get("size")));
             }
@@ -35,7 +39,12 @@ export function TalentsListPage() {
     return (
         <>
             <TalentsList talents={talents} />
-            <Pagination />
+            <Pagination
+                page={page}
+                size={size}
+                countOfPages={countOfPages}
+                path={"talents"}
+            />
         </>
     );
 }

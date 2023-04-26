@@ -25,22 +25,22 @@ export function AcceptingModal({
     }, [setIsOpen]);
 
     const showModal = useCallback(() => {
-		setIsOpen(true);
-		document.body.style.overflowY = "hidden";
-	}, []);
+        setIsOpen(true);
+        document.body.style.overflowY = "hidden";
+    }, []);
 
     const hideModal = useCallback(() => {
-		setIsOpen(false);
-		document.body.style.overflowY = "auto";
-	}, []);
+        setIsOpen(false);
+        document.body.style.overflowY = "auto";
+    }, []);
 
-    useEffect(()=>{
-        if(isOpen){
+    useEffect(() => {
+        if (isOpen) {
             showModal();
-        }else{
+        } else {
             hideModal();
         }
-    },[isOpen]);
+    }, [isOpen]);
 
     const deleteTalent = (id) => {
         try {
@@ -74,7 +74,10 @@ export function AcceptingModal({
                     </button>
                 </div>
                 <div className={s.body}>
-                    <p>Are you sure you want to delete your account permanently?</p>
+                    <p>
+                        Are you sure you want to delete your account
+                        permanently?
+                    </p>
                 </div>
                 <div className={s.btns}>
                     <Button

@@ -29,16 +29,15 @@ export function TalentsProvider({ children }) {
         try {
             getTalents(page, size).then((response) => {
                 setTalents(response.content);
-                setCountOfPages(response.total_pages); 
+                setCountOfPages(response.total_pages);
                 setIsLoading(false);
             });
-            
         } catch (error) {
             setIsLoading(false);
             console.log(error);
             setTalents(data.content);
         }
-    }, [ getTalents, page, size]);
+    }, [getTalents, page, size]);
 
     const talentsValue = useMemo(
         () => ({

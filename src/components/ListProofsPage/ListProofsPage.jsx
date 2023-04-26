@@ -1,29 +1,73 @@
 import { TalentsService } from "../../services/api-services";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ProofBlock } from "../TalentPage/components/ListProofs/components/ProofBlock";
 import { Button } from "../../shared/components";
+import { Pagination } from "../TalentsListPage/components/Pagination";
 import s from "./ListProofsPage.module.scss";
 
 export function ListProofsPage() {
     const [proofs, setProofs] = useState({});
 
+    const [pages, setPages] = useState({ page: 0, size: 5, orderBy: "desc" });
+    const [countOfPages, setCountOfPages] = useState(0);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(5);
+
     useEffect(() => {
-        TalentsService.getAllProofs().then((res) => setProofs(res));
-    }, []);
+        if (searchParams.has("page") && searchParams.has("size")) {
+            if (
+                Number(searchParams.get("page")) < 0 ||
+                Number(searchParams.get("page")) > countOfPages ||
+                Number(searchParams.get("size")) <= 0
+            ) {
+                let sParams = {};
+                sParams.page = page;
+                sParams.size = size;
+                setSearchParams(sParams, { replace: true });
+            } else {
+                setPage(Number(searchParams.get("page")));
+                setSize(Number(searchParams.get("size")));
+            }
+        }
+    }, [searchParams]);
+
+    useEffect(() => {
+        if (!searchParams.has("page") || !searchParams.has("size")) {
+            let sParams = {};
+            sParams.page = page;
+            sParams.size = size;
+            setSearchParams(sParams, { replace: true });
+        }
+    }, [page, searchParams, size]);
+
+    useEffect(() => {
+        if (0 < page < countOfPages) {
+            TalentsService.getAllProofs(
+                searchParams.get("page") || "",
+                pages.size,
+                pages.orderBy
+            ).then((res) => {
+                setProofs(res.content);
+                setCountOfPages(res.total_pages);
+            });
+        } else {
+            TalentsService.getAllProofs(0, pages.size, pages.orderBy).then(
+                (res) => {
+                    setProofs(res.content);
+                    setCountOfPages(res.total_pages);
+                }
+            );
+        }
+    }, [pages, page, size]);
 
     const filterByDateAsc = () => {
-        const data = [...proofs].sort(
-            (a, b) => new Date(b.created) - new Date(a.created)
-        );
-        setProofs(data);
+        setPages({ ...pages, orderBy: "asc" });
     };
 
     const filterByDateDesc = () => {
-        const data = [...proofs].sort(
-            (a, b) => new Date(b.created) - new Date(a.created)
-        );
-        setProofs(data.reverse());
+        setPages({ ...pages, orderBy: "desc" });
     };
 
     return (
@@ -51,6 +95,12 @@ export function ListProofsPage() {
             ) : (
                 <div></div>
             )}
+            <Pagination
+                countOfPages={countOfPages}
+                page={page}
+                size={pages.size}
+                path={"proofs"}
+            />
         </div>
     );
 }

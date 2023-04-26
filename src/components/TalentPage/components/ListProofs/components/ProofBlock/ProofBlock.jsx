@@ -1,6 +1,7 @@
+import { useState } from "react";
 import s from "./ProofBlock.module.scss";
 
-export function ProofBlock({ link, text, created }) {
+export function ProofBlock({ id, link, text, created }) {
     return (
         <div className={s.out}>
             <div className={s.proofs}>
@@ -14,6 +15,7 @@ export function ProofBlock({ link, text, created }) {
                         {text}
                     </div>
                 </div>
+
                 <div className={s.date}>
                     <b className={s.created}>
                         Created: {created.split(" ")[0]}

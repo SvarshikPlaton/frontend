@@ -79,11 +79,13 @@ export const TalentsService = {
             return error;
         }
     },
-    async getAllProofs() {
+    async getAllProofs(page = 0, size = 5, orderBy = "asc") {
         try {
-            const response = await axiosInstance.get(`talents/proofs`);
+            const response = await axiosInstance.get(
+                `talents/proofs?page=${page}&size=${size}&order-by=${orderBy}`
+            );
 
-            return response?.data.content;
+            return response?.data;
         } catch (error) {
             console.log(error);
             return error;
@@ -112,6 +114,25 @@ export const TalentsService = {
             const response = await axiosInstance.patch(
                 `talents/${id}`,
                 editedUser,
+                {
+                    headers,
+                }
+            );
+
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    },
+    async editProof(id, idProof, editedProof, token) {
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+        try {
+            const response = await axiosInstance.patch(
+                `talents/${id}/proofs/${idProof}`,
+                editedProof,
                 {
                     headers,
                 }
