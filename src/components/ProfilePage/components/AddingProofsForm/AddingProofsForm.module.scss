@@ -51,16 +51,23 @@
     font-size: 22px;
     margin-top: 20px;
     width: 100%;
-    min-height: 180px;
+    min-height: 90px;
     border-radius: 8px;
 }
 .btns {
     margin-top: 30px;
-}
-.btn {
     display: flex;
-    margin-left: auto;
-    padding: 5px 20px;
+    justify-content: flex-end;
+    align-items: center;
 }
 
+.error{
+    color: #ff0062c1;
+    -webkit-text-fill-color: #ff0062c1;
+    font-size: 14px;
+}
 
+.btn {
+    padding: 5px 20px;
+    margin-left: 10px;
+}

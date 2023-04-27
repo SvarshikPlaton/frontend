@@ -157,13 +157,33 @@ export const TalentsService = {
         const headers = {
             Authorization: `Bearer ${token}`,
         };
-        const response = await axiosInstance.post(
-            `talents/${id}/proofs`,
-            proof,
-            {
+        try{
+            const response = await axiosInstance.post(
+                `talents/${id}/proofs`,
+                proof,
+                {
+                    headers,
+                }
+            );
+            return response;
+        }catch(error){
+            console.log(error);
+            throw error;
+        }
+    },
+
+    async deleteProof(id, idProof, token) {
+        try{
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            const response = await axiosInstance.delete(`talents/${id}/proofs/${idProof}`, {
                 headers,
-            }
-        );
-        return response;
+            });
+            return response;
+        }catch(error){
+            console.log(error);
+            return error;
+        }
     },
 };

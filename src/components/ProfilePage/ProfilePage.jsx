@@ -9,8 +9,8 @@ import { useCookies } from "react-cookie";
 import { AcceptingModal } from "./components/AcceptingModal";
 import { TalentData } from "./components/TalentData/TalentData";
 import { About } from "./components/About";
-import { ListProofs } from "../TalentPage/components/ListProofs";
 import { AddingProofsForm } from "./components/AddingProofsForm/AddingProofsForm";
+import { ProfileListProofs } from "./components/ProfileListProofs";
 
 export function ProfilePage() {
     const navigate = useNavigate();
@@ -214,10 +214,6 @@ export function ProfilePage() {
                             contacts: normalizeContacts(contacts.contacts),
                         }));
                         setEditting(false);
-                        // sessionStorage.setItem("profile", {
-                        //     first_name: firstName.name,
-                        //     last_name: lastName.name,
-                        // });
                     })
                     .catch((error) => {
                         if (error.response.status === 400) {
@@ -281,10 +277,10 @@ export function ProfilePage() {
                 <About {...propsAbout} ref={aboutRef} />
             </div>
             <div className={s.proofs_side}>
-                <AddingProofsForm user={user} token={token} />
+                <AddingProofsForm id={user.id} token={token} />
             </div>
             {user.id ? (
-                <ListProofs id={user.id} />
+                <ProfileListProofs id={user.id} token={token}/>
             ) : (
                 <span>
                     <div className={s.no_proofs}>Something went wrong</div>
