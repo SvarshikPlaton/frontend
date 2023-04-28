@@ -14,7 +14,9 @@ export function ProfileListProofs({ id, token }) {
             TalentsService.getProofs(id, token)
                 .then((proofs) => {
                     setTalentsProofs(proofs);
-                    setEditProof(proofs.map((el) => ({ id: el.id, edit: false })));
+                    setEditProof(
+                        proofs.map((el) => ({ id: el.id, edit: false }))
+                    );
                 })
                 .catch((err) => console.log(err));
         }

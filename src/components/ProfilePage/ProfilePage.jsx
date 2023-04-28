@@ -280,7 +280,7 @@ export function ProfilePage() {
                 <AddingProofsForm id={user.id} token={token} />
             </div>
             {user.id ? (
-                <ProfileListProofs id={user.id} token={token}/>
+                <ProfileListProofs id={user.id} token={token} />
             ) : (
                 <span>
                     <div className={s.no_proofs}>Something went wrong</div>

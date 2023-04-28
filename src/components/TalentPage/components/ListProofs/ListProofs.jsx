@@ -11,11 +11,9 @@ export function ListProofs({ id }) {
         TalentsService.getProofs(id, token)
             .then((proofs) => {
                 setTalentsProofs(proofs);
-                console.log(talentsProofs)
             })
             .catch((err) => console.log(err));
     }, [talentsProofs.length]);
-
     return (
         <>
             {talentsProofs.length > 0 ? (

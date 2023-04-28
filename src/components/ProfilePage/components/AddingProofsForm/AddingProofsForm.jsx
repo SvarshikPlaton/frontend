@@ -5,7 +5,14 @@ import { UserContext } from "../../../../context/UserContext";
 import s from "./AddingProofsForm.module.scss";
 import plus from "../../../../shared/images/plus.svg";
 
-export function AddingProofsForm({ id, token, edit = null, editProof = null, setEditProof = null, proof = null }) {
+export function AddingProofsForm({
+    id,
+    token,
+    edit = null,
+    editProof = null,
+    setEditProof = null,
+    proof = null,
+}) {
     const [activeProofs, setActiveProofs] = useState(edit !== null);
     const [link, setLink] = useState(edit === null ? "" : proof.link);
     const [text, setText] = useState(edit === null ? "" : proof.text);
@@ -20,7 +27,13 @@ export function AddingProofsForm({ id, token, edit = null, editProof = null, set
             .then(() => {
                 setTalentsProofs((prev) => [
                     ...prev,
-                    { id: NaN, link: "string", text: "string", created: "date", status: "DRAFT" },
+                    {
+                        id: NaN,
+                        link: "string",
+                        text: "string",
+                        created: "date",
+                        status: "DRAFT",
+                    },
                 ]);
                 setActiveProofs(false);
                 setLink("");
@@ -28,7 +41,10 @@ export function AddingProofsForm({ id, token, edit = null, editProof = null, set
                 setAddProofError("");
             })
             .catch((error) => {
-                if (error.response.status === 400 || error.response.status === 500) {
+                if (
+                    error.response.status === 400 ||
+                    error.response.status === 500
+                ) {
                     setAddProofError("Incorrect link or description entered");
                 } else {
                     setAddProofError("Something goes wrong");
@@ -39,13 +55,18 @@ export function AddingProofsForm({ id, token, edit = null, editProof = null, set
     function save(e) {
         e.preventDefault();
 
-        const newProof = { link: link, text: text, status: proof.status, created: proof.created};
+        const newProof = {
+            link: link,
+            text: text,
+            status: proof.status,
+            created: proof.created,
+        };
         TalentsService.editProof(id, proof.id, newProof, token)
             .then(() => {
                 setTalentsProofs(
                     talentsProofs.map((obj) => {
                         if (obj.id === proof.id) {
-                            return {id:proof.id , ...newProof};
+                            return { id: proof.id, ...newProof };
                         }
                         return obj;
                     })
@@ -63,7 +84,10 @@ export function AddingProofsForm({ id, token, edit = null, editProof = null, set
                 setAddProofError("");
             })
             .catch((error) => {
-                if (error.response.status === 400 || error.response.status === 500) {
+                if (
+                    error.response.status === 400 ||
+                    error.response.status === 500
+                ) {
                     setAddProofError("Incorrect link or description entered");
                 } else {
                     setAddProofError("Something goes wrong");
@@ -111,7 +135,7 @@ export function AddingProofsForm({ id, token, edit = null, editProof = null, set
                             <span className={s.error}>{addProofError}</span>
                             {edit === null ? (
                                 <Button className={s.btn} onClick={handle}>
-                                    Publish
+                                    Create
                                 </Button>
                             ) : (
                                 <>
@@ -122,7 +146,10 @@ export function AddingProofsForm({ id, token, edit = null, editProof = null, set
                                             setEditProof(
                                                 editProof.map((obj) => {
                                                     if (obj.id === proof.id) {
-                                                        return { ...obj, edit: false };
+                                                        return {
+                                                            ...obj,
+                                                            edit: false,
+                                                        };
                                                     }
                                                     return obj;
                                                 })
@@ -131,10 +158,7 @@ export function AddingProofsForm({ id, token, edit = null, editProof = null, set
                                     >
                                         Cancel
                                     </Button>
-                                    <Button
-                                        className={s.btn}
-                                        onClick={save}
-                                    >
+                                    <Button className={s.btn} onClick={save}>
                                         Save
                                     </Button>
                                 </>

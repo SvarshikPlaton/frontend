@@ -21,7 +21,8 @@
     background-position: bottom -70px right -40px;
 
     &:hover {
-        box-shadow: 8px 8px 15px rgba(185, 145, 250, 0.5), inset 5px 5px 10px #111111;
+        box-shadow: 8px 8px 15px rgba(185, 145, 250, 0.5),
+            inset 5px 5px 10px #111111;
         transform: scale(1.01);
     }
 }
@@ -124,11 +125,24 @@
 
 .date {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: flex-end;
     width: 100%;
 }
+.kudos_block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.kudos {
+    transition-duration: 0.5s;
+    margin-bottom: 12px;
+    transition-duration: 0.5s;
+}
 
+.count {
+    font-weight: 800;
+}
 .created {
     height: auto;
     display: flex;

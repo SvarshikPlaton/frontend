@@ -86,6 +86,7 @@ export function ListProofsPage() {
                     return (
                         <ProofBlock
                             key={el.id}
+                            id={el.id}
                             link={el.link}
                             text={el.text}
                             created={el.created}

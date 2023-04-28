@@ -1,5 +1,5 @@
-import { useState } from "react";
 import s from "./ProofBlock.module.scss";
+import { Kudos } from "./components/Kudos";
 
 export function ProofBlock({ id, link, text, created }) {
     return (
@@ -7,7 +7,12 @@ export function ProofBlock({ id, link, text, created }) {
             <div className={s.proofs}>
                 <div className={s.info}>
                     <h1>Link:</h1>
-                    <a className={s.link} href={link} target="_blank" rel="noreferrer">
+                    <a
+                        className={s.link}
+                        href={link}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
                         Click to know me more
                     </a>
                     <div className={s.proof_description}>
@@ -15,8 +20,8 @@ export function ProofBlock({ id, link, text, created }) {
                         {text}
                     </div>
                 </div>
-
                 <div className={s.date}>
+                    <Kudos id={id} />
                     <b className={s.created}>
                         Created: {created.split(" ")[0]}
                     </b>
