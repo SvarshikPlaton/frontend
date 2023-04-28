@@ -26,16 +26,15 @@ export function Kudos({ id }) {
             if (!isLiked) {
                 TalentsService.putKudos(id, token)
                     .then((response) => {
-                        setKudos((prev) => prev + 1);
-
-                        setIsLiked((prev) => !prev);
+                        setKudos(kudos + 1);
+                        setIsLiked(!isLiked);
                     })
                     .catch((err) => console.log(err));
             } else {
                 TalentsService.deleteKudos(id, token)
                     .then(() => {
-                        setKudos((prev) => prev - 1);
-                        setIsLiked((prev) => !prev);
+                        setKudos(kudos - 1);
+                        setIsLiked(!isLiked);
                     })
                     .catch((err) => console.log(err));
             }
