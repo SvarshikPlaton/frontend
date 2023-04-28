@@ -31,7 +31,11 @@ export function TalentPage() {
             </div>
             <div className={s.container}>
                 <div className={s.talent_data}>
-                    <img className={s.ava} src={talent.image ? talent.image : userAvatar} alt="avatar" />
+                    <img
+                        className={s.ava}
+                        src={talent.image ? talent.image : userAvatar}
+                        alt="avatar"
+                    />
                     <div>
                         <div className={s.name}>
                             {talent.first_name} {talent.last_name}

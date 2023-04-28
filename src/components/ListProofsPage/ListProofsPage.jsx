@@ -90,6 +90,7 @@ export function ListProofsPage() {
                             link={el.link}
                             text={el.text}
                             created={el.created}
+                            status={el.status}
                         />
                     );
                 })
