@@ -1,1 +1,0 @@
-export {DeletingProofModal} from "./DeletingProofModal";

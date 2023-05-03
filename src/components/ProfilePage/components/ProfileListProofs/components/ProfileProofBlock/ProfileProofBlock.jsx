@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { TalentsService } from "../../../../../../services/api-services";
 import s from "./ProfileProofBlock.module.scss";
 import { handlerDropdown } from "./dropdown";
-import { DeletingProofModal } from "./components/DeletingProofModal";
-import { Kudos } from "../../../../../TalentPage/components/ListProofs/components/ProofBlock/components/Kudos";
+
 export function ProfileProofBlock({
     id,
     userID,
@@ -16,12 +15,13 @@ export function ProfileProofBlock({
     setTalentsProofs,
     editProof,
     setEditProof,
+    setDeleteModalIsOpen,
+    setProofID,
 }) {
     window.onclick = (event) => {
         handlerDropdown(event, s.dropdown_content, s.show);
     };
 
-    const [modalIsOpen, setModalIsOpen] = useState(false);
     const [kudos, setKudos] = useState(0);
     useEffect(() => {
         TalentsService.getKudos(id, token)
@@ -55,24 +55,17 @@ export function ProfileProofBlock({
 
     return (
         <>
-            <DeletingProofModal
-                id={id}
-                userID={userID}
-                token={token}
-                modalIsOpen={modalIsOpen}
-                setModalIsOpen={setModalIsOpen}
-                talentsProofs={talentsProofs}
-                setTalentsProofs={setTalentsProofs}
-            />
             <div className={s.out}>
                 <div className={s.proofs}>
                     <div className={s.info}>
                         <div className={s.settings}>
-                            <button className={s.dropbtn}></button>
-                            <div
-                                id="cityDropdown"
-                                className={s.dropdown_content}
-                            >
+                            <button
+                                className={s.dropbtn}
+                                onClick={() => {
+                                    setProofID(id);
+                                }}
+                            ></button>
+                            <div id="cityDropdown" className={s.dropdown_content}>
                                 {status === "DRAFT" ? (
                                     <button
                                         onClick={() => {
@@ -92,35 +85,18 @@ export function ProfileProofBlock({
                                     ""
                                 )}
                                 {status === "DRAFT" || status === "HIDDEN" ? (
-                                    <button onClick={() => save("PUBLISHED")}>
-                                        Publish
-                                    </button>
+                                    <button onClick={() => save("PUBLISHED")}>Publish</button>
                                 ) : (
                                     ""
                                 )}
-                                {status === "PUBLISHED" ? (
-                                    <button onClick={() => save("HIDDEN")}>
-                                        Hide
-                                    </button>
-                                ) : (
-                                    ""
-                                )}
-                                <button onClick={() => setModalIsOpen(true)}>
-                                    Delete
-                                </button>
+                                {status === "PUBLISHED" ? <button onClick={() => save("HIDDEN")}>Hide</button> : ""}
+                                <button onClick={() => setDeleteModalIsOpen(true)}>Delete</button>
                             </div>
                         </div>
-                        <span className={s.status}>
-                            {status.toLocaleLowerCase()}
-                        </span>
+                        <span className={s.status}>{status.toLocaleLowerCase()}</span>
 
                         <h1>Link:</h1>
-                        <a
-                            className={s.link}
-                            href={link}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
+                        <a className={s.link} href={link} target="_blank" rel="noreferrer">
                             Click to know me more
                         </a>
                         <div className={s.proof_description}>
@@ -143,9 +119,7 @@ export function ProfileProofBlock({
                             </svg>
                             <div className={s.count}>{kudos} </div>
                         </div>
-                        <b className={s.created}>
-                            Created: {created.split(" ")[0]}
-                        </b>
+                        <b className={s.created}>Created: {created.split(" ")[0]}</b>
                     </div>
                 </div>
             </div>

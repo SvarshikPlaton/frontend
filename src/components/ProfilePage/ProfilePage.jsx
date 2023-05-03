@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router";
 import s from "./ProfilePage.module.scss";
-import { Button } from "../../shared/components";
+import { Button, ModalWindow } from "../../shared/components";
 import { useNavigate } from "react-router-dom";
 import { TalentsService } from "../../services/api-services";
 import { UserContext } from "../../context/UserContext";
 import { useCookies } from "react-cookie";
-import { AcceptingModal } from "./components/AcceptingModal";
 import { TalentData } from "./components/TalentData/TalentData";
 import { About } from "./components/About";
 import { AddingProofsForm } from "./components/AddingProofsForm/AddingProofsForm";
@@ -27,6 +26,7 @@ export function ProfilePage() {
     const [editting, setEditting] = useState(false);
     const { setUserInfo } = useContext(UserContext);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
     const [saveError, setSaveError] = useState("");
 
     useEffect(() => {
@@ -177,8 +177,7 @@ export function ProfilePage() {
     function save() {
         talentDataRef.current?.validate();
         aboutRef.current?.validate();
-        let isValid =
-            talentDataRef.current?.validate() && aboutRef.current?.validate();
+        let isValid = talentDataRef.current?.validate() && aboutRef.current?.validate();
 
         if (isValid) {
             const obj = {
@@ -186,9 +185,7 @@ export function ProfilePage() {
                 last_name: lastName.name,
                 specialization: specialization.spec,
                 talents: allTalents,
-                links: links
-                    .map((el) => el.link)
-                    .filter((el) => el.trim().length !== 0),
+                links: links.map((el) => el.link).filter((el) => el.trim().length !== 0),
                 bio: normalizeString(bio.bio),
                 additional_info: normalizeString(additionalInfo.info),
                 contacts: normalizeContacts(contacts.contacts),
@@ -204,13 +201,9 @@ export function ProfilePage() {
                             last_name: lastName.name,
                             specialization: specialization.spec,
                             talents: allTalents,
-                            links: links
-                                .map((el) => el.link)
-                                .filter((el) => el.trim().length !== 0),
+                            links: links.map((el) => el.link).filter((el) => el.trim().length !== 0),
                             bio: normalizeString(bio.bio),
-                            additional_info: normalizeString(
-                                additionalInfo.info
-                            ),
+                            additional_info: normalizeString(additionalInfo.info),
                             contacts: normalizeContacts(contacts.contacts),
                         }));
                         setEditting(false);
@@ -225,6 +218,22 @@ export function ProfilePage() {
             }
         }
     }
+
+    const deleteTalent = () => {
+        try {
+            TalentsService.deleteTalent(user.id, token)
+                .then(() => {
+                    removeCookie("token");
+                    removeCookie("user");
+                    navigate("/", { replace: true });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     const propsTalentData = {
         profile,
@@ -249,6 +258,7 @@ export function ProfilePage() {
         setEditting,
         save,
         setModalIsOpen,
+        setCancelModalIsOpen,
         bio,
         setBio,
         additionalInfo,
@@ -260,12 +270,24 @@ export function ProfilePage() {
 
     return (
         <>
-            <AcceptingModal
+            <ModalWindow
+                title={"Deleting"}
+                notice={"Are you sure you want to delete your account permanently?"}
+                agreeButtonText={"Yes, I want"}
+                disagreeButtonText={"No, I don't"}
                 isOpen={modalIsOpen}
                 setIsOpen={setModalIsOpen}
-                removeCookie={removeCookie}
-                user={user}
-                token={token}
+                func={deleteTalent}
+            />
+
+            <ModalWindow
+                title={"Canceling"}
+                notice={"Are you sure you want to undo all changes?"}
+                agreeButtonText={"Yes, I want"}
+                disagreeButtonText={"No, I don't"}
+                isOpen={cancelModalIsOpen}
+                setIsOpen={setCancelModalIsOpen}
+                func={()=>{setEditting(false)}}
             />
             <div className={s.btns}>
                 <Button className={s.btn} onClick={() => navigate(-1)}>

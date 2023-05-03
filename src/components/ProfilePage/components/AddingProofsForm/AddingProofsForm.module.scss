@@ -47,12 +47,36 @@
 .description {
     padding: 5px;
 }
+
+.description_text {
+    position: relative;
+}
+
 .pr_description {
     font-size: 22px;
     margin-top: 20px;
     width: 100%;
     min-height: 90px;
     border-radius: 8px;
+}
+
+.description_length {
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+.error {
+    border: 3px solid #ff0062c1;
+}
+.error_msg {
+    position: absolute;
+    font-size: 10px;
+    display: inline-block;
+    padding: 0 5px;
+    text-align: justify;
+    font-weight: 600;
 }
 .btns {
     margin-top: 30px;
@@ -61,7 +85,7 @@
     align-items: center;
 }
 
-.error{
+.error_form {
     color: #ff0062c1;
     -webkit-text-fill-color: #ff0062c1;
     font-size: 14px;

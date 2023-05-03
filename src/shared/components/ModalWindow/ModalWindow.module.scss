@@ -39,15 +39,14 @@
     }
 }
 
-.header{
+.header {
     position: relative;
     display: flex;
     justify-content: center;
-    span{
+    span {
         font-size: 24px;
         font-weight: 700;
     }
-
 }
 
 .close {
@@ -74,11 +73,11 @@
     padding: 20px 10px;
 }
 
-.btns{
+.btns {
     display: flex;
     justify-content: space-evenly;
 }
 
-.btn{
+.btn {
     padding: 5px 10px;
 }

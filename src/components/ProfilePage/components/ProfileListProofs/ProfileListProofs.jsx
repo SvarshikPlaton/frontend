@@ -3,27 +3,73 @@ import { TalentsService } from "../../../../services/api-services";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../../context/UserContext";
 import s from "./ProfileListProofs.module.scss";
-import { AddingProofsForm } from "../AddingProofsForm/AddingProofsForm";
+import { AddingProofsForm } from "../AddingProofsForm";
+import { ModalWindow } from "../../../../shared/components";
 
 export function ProfileListProofs({ id, token }) {
     const { talentsProofs, setTalentsProofs } = useContext(UserContext);
     const [editProof, setEditProof] = useState([]);
+
+    const [proofID, setProofID] = useState(null);
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+    const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
+
     useEffect(() => {
         if (id) {
             TalentsService.getProofs(id, token)
                 .then((proofs) => {
                     setTalentsProofs(proofs);
-                    setEditProof(
-                        proofs.map((el) => ({ id: el.id, edit: false }))
-                    );
+                    setEditProof(proofs.map((el) => ({ id: el.id, edit: false })));
                 })
                 .catch((err) => console.log(err));
         }
     }, [id, token, talentsProofs.length, setTalentsProofs]);
+
+    const deleteProof = () => {
+        try {
+            TalentsService.deleteProof(id, proofID, token)
+                .then(() => {
+                    setTalentsProofs(talentsProofs.filter((el) => el.id !== proofID));
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <>
             {talentsProofs.length > 0 ? (
                 <div>
+                    <ModalWindow
+                        title={"Deleting"}
+                        notice={"Are you sure you want to delete this proof permanently?"}
+                        agreeButtonText={"Yes, I want"}
+                        disagreeButtonText={"No, I don't"}
+                        isOpen={deleteModalIsOpen}
+                        setIsOpen={setDeleteModalIsOpen}
+                        func={deleteProof}
+                    />
+                    <ModalWindow
+                        title={"Canceling"}
+                        notice={"Are you sure you want to undo all changes?"}
+                        agreeButtonText={"Yes, I want"}
+                        disagreeButtonText={"No, I don't"}
+                        isOpen={cancelModalIsOpen}
+                        setIsOpen={setCancelModalIsOpen}
+                        func={() => {
+                            setEditProof(
+                                editProof.map((obj) => {
+                                    return {
+                                        ...obj,
+                                        edit: false,
+                                    };
+                                })
+                            );
+                        }}
+                    />
                     {talentsProofs.map((el) => {
                         if (editProof.find((obj) => obj.id === el.id)?.edit) {
                             return (
@@ -35,6 +81,7 @@ export function ProfileListProofs({ id, token }) {
                                     editProof={editProof}
                                     setEditProof={setEditProof}
                                     proof={el}
+                                    setCancelModalIsOpen={setCancelModalIsOpen}
                                 />
                             );
                         } else {
@@ -52,6 +99,8 @@ export function ProfileListProofs({ id, token }) {
                                     setEditProof={setEditProof}
                                     talentsProofs={talentsProofs}
                                     setTalentsProofs={setTalentsProofs}
+                                    setDeleteModalIsOpen={setDeleteModalIsOpen}
+                                    setProofID={setProofID}
                                 />
                             );
                         }

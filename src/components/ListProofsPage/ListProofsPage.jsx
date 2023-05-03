@@ -102,6 +102,7 @@ export function ListProofsPage() {
                             text={el.text}
                             created={el.created}
                             status={el.status}
+                            myProofs={[...talentsProofs]}
                         />
                     );
                 })
