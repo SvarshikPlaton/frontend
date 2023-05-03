@@ -21,7 +21,7 @@ export function ListProofsPage() {
         if (user.id) {
             TalentsService.getProofs(user.id, token)
                 .then((proofs) => {
-                    setTalentsProofs(proofs);
+                    setTalentsProofs(proofs.content);
                 })
                 .catch((err) => console.log(err));
         }

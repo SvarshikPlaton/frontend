@@ -91,19 +91,19 @@ export const TalentsService = {
             return error;
         }
     },
-    async getProofs(id, token) {
+    async getProofs(id, token, size = "") {
         const headers = {
             Authorization: `Bearer ${token}`,
         };
         try {
             const response = await axiosInstance.get(
-                `v2/talents/${id}/proofs`,
+                `v2/talents/${id}/proofs?size=${size}&order-by=desc`,
                 {
                     headers,
                 }
             );
 
-            return response?.data.proofs.content;
+            return response?.data.proofs;
         } catch (error) {
             console.log(error);
             return error;

@@ -14,12 +14,15 @@ export function ProfileListProofs({ id, token }) {
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
 
+    const [size, setSize] = useState();
+
     useEffect(() => {
         if (id) {
-            TalentsService.getProofs(id, token)
+            TalentsService.getProofs(id, token, size)
                 .then((proofs) => {
-                    setTalentsProofs(proofs);
-                    setEditProof(proofs.map((el) => ({ id: el.id, edit: false })));
+                    setTalentsProofs(proofs.content);
+                    setEditProof(proofs.content.map((el) => ({ id: el.id, edit: false })));
+                    setSize(proofs.total_elements);
                 })
                 .catch((err) => console.log(err));
         }

@@ -10,8 +10,7 @@ export function ListProofs({ id }) {
     useEffect(() => {
         TalentsService.getProofs(id, token)
             .then((proofs) => {
-                setTalentsProofs(proofs);
-                console.log(talentsProofs)
+                setTalentsProofs(proofs.content);
             })
             .catch((err) => console.log(err));
     }, [talentsProofs.length]);
