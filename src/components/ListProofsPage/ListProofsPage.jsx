@@ -1,6 +1,7 @@
 import { TalentsService } from "../../services/api-services";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useSearchParams } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 import { ProofBlock } from "../TalentPage/components/ListProofs/components/ProofBlock";
 import { Button } from "../../shared/components";
 import { Pagination } from "../TalentsListPage/components/Pagination";
@@ -8,13 +9,23 @@ import s from "./ListProofsPage.module.scss";
 
 export function ListProofsPage() {
     const [proofs, setProofs] = useState({});
-
+    const { user } = useContext(UserContext);
+    const { token } = useContext(UserContext);
+    const { talentsProofs, setTalentsProofs } = useContext(UserContext);
     const [pages, setPages] = useState({ page: 0, size: 5, orderBy: "desc" });
     const [countOfPages, setCountOfPages] = useState(0);
     const [searchParams, setSearchParams] = useSearchParams();
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(5);
-
+    useEffect(() => {
+        if (user.id) {
+            TalentsService.getProofs(user.id, token)
+                .then((proofs) => {
+                    setTalentsProofs(proofs);
+                })
+                .catch((err) => console.log(err));
+        }
+    }, [token, talentsProofs.length, setTalentsProofs]);
     useEffect(() => {
         if (searchParams.has("page") && searchParams.has("size")) {
             if (

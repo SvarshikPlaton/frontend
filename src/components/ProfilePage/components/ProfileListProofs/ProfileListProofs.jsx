@@ -8,7 +8,6 @@ import { AddingProofsForm } from "../AddingProofsForm/AddingProofsForm";
 export function ProfileListProofs({ id, token }) {
     const { talentsProofs, setTalentsProofs } = useContext(UserContext);
     const [editProof, setEditProof] = useState([]);
-
     useEffect(() => {
         if (id) {
             TalentsService.getProofs(id, token)
@@ -21,7 +20,6 @@ export function ProfileListProofs({ id, token }) {
                 .catch((err) => console.log(err));
         }
     }, [id, token, talentsProofs.length, setTalentsProofs]);
-
     return (
         <>
             {talentsProofs.length > 0 ? (

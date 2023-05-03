@@ -14,6 +14,7 @@ export function ListProofs({ id }) {
             })
             .catch((err) => console.log(err));
     }, [talentsProofs.length]);
+
     return (
         <>
             {talentsProofs.length > 0 ? (
