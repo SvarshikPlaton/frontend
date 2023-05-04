@@ -25,7 +25,7 @@ export function ListProofsPage() {
                 })
                 .catch((err) => console.log(err));
         }
-    }, [token, talentsProofs.length, setTalentsProofs]);
+    }, [token, talentsProofs?.length, setTalentsProofs]);
     useEffect(() => {
         if (searchParams.has("page") && searchParams.has("size")) {
             if (

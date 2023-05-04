@@ -7,10 +7,16 @@ import s from "./ListProofs.module.scss";
 export function ListProofs({ id }) {
     const { token, talentsProofs, setTalentsProofs } = useContext(UserContext);
 
+    const [size, setSize] = useState();
+
     useEffect(() => {
-        TalentsService.getProofs(id, token)
+        TalentsService.getProofs(id, token, size)
             .then((proofs) => {
                 setTalentsProofs(proofs.content);
+                setSize(
+                    proofs.total_elements === 0 ? 5 : proofs.total_elements
+                );
+
             })
             .catch((err) => console.log(err));
     }, [talentsProofs.length]);

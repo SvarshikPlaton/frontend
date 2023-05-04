@@ -21,18 +21,23 @@ export function ProfileListProofs({ id, token }) {
             TalentsService.getProofs(id, token, size)
                 .then((proofs) => {
                     setTalentsProofs(proofs.content);
-                    setEditProof(proofs.content.map((el) => ({ id: el.id, edit: false })));
-                    setSize(proofs.total_elements);
+                    setEditProof(
+                        proofs.content.map((el) => ({ id: el.id, edit: false }))
+                    );
+                    setSize(proofs.total_elements === 0 ? 5 : proofs.total_elements);
+
                 })
                 .catch((err) => console.log(err));
         }
-    }, [id, token, talentsProofs.length, setTalentsProofs]);
+    }, [id, token, talentsProofs?.length, setTalentsProofs, size]);
 
     const deleteProof = () => {
         try {
             TalentsService.deleteProof(id, proofID, token)
                 .then(() => {
-                    setTalentsProofs(talentsProofs.filter((el) => el.id !== proofID));
+                    setTalentsProofs(
+                        talentsProofs.filter((el) => el.id !== proofID)
+                    );
                 })
                 .catch((error) => {
                     console.error(error);
@@ -44,11 +49,13 @@ export function ProfileListProofs({ id, token }) {
 
     return (
         <>
-            {talentsProofs.length > 0 ? (
+            {talentsProofs?.length > 0 ? (
                 <div>
                     <ModalWindow
                         title={"Deleting"}
-                        notice={"Are you sure you want to delete this proof permanently?"}
+                        notice={
+                            "Are you sure you want to delete this proof permanently?"
+                        }
                         agreeButtonText={"Yes, I want"}
                         disagreeButtonText={"No, I don't"}
                         isOpen={deleteModalIsOpen}
