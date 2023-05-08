@@ -15,7 +15,7 @@ export function validateLinks(link) {
 }
 
 export function validateText(text) {
-    const TEXT_REGEXP = /^[A-Za-z0-9'".,:;@#?!()[\]*_/-—\s]{0,255}$/;
+    const TEXT_REGEXP = /^[A-Za-z0-9'".,:;@#?!()[\]*_/—-\s]{1,255}$/;
     if (TEXT_REGEXP.test(String(text).toLowerCase())) {
         return { error: "", state: true };
     } else {
