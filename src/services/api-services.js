@@ -35,6 +35,20 @@ export const TalentsService = {
             return error;
         }
     },
+    async getSponsor(id, token) {
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+        try {
+            const response = await axiosInstance.get(`v3/sponsors/${id}`, {
+                headers,
+            });
+            return response?.data;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
     async login(login, password) {
         const authString = `${login}:${password}`;
         const encodedAuthString = base64_encode(authString);
@@ -43,7 +57,7 @@ export const TalentsService = {
         };
         try {
             const response = await axiosInstance.post(
-                `v2/talents/login`,
+                `v2/login`,
                 {},
                 { headers }
             );
@@ -52,9 +66,20 @@ export const TalentsService = {
             throw error;
         }
     },
-    async register(newUser) {
+
+    async registerTalent(newUser) {
         try {
             const response = await axiosInstance.post(`v2/talents/register`, {
+                ...newUser,
+            });
+            return response?.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+    async registerSponsor(newUser) {
+        try {
+            const response = await axiosInstance.post(`v3/sponsors/register`, {
                 ...newUser,
             });
             return response?.data;
@@ -157,6 +182,7 @@ export const TalentsService = {
         });
         return response;
     },
+
     async addProof(proof, id, token) {
         const headers = {
             Authorization: `Bearer ${token}`,
@@ -175,7 +201,25 @@ export const TalentsService = {
             throw error;
         }
     },
+    async getSponsorKudoses(id, token) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            let response = await axiosInstance.get(
+                `v3/sponsors/${id}/kudos`,
 
+                {
+                    headers,
+                }
+            );
+
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
     async deleteProof(id, idProof, token) {
         try {
             const headers = {

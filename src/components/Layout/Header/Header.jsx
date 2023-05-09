@@ -19,8 +19,16 @@ export function Header() {
     const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
 
     useEffect(() => {
-        if (user.id) {
+        if (user.id && user.role === "TALENT") {
             TalentsService.getTalent(user.id, token)
+                .then((response) => {
+                    setUserInfo(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else if (user.id && user.role === "SPONSOR") {
+            TalentsService.getSponsor(user.id, token)
                 .then((response) => {
                     setUserInfo(response);
                 })
@@ -69,7 +77,14 @@ export function Header() {
                         </Button>
                     ) : (
                         <>
-                            <Link to="/profile" className={s.username}>
+                            <Link
+                                to={
+                                    user.role === "SPONSOR"
+                                        ? "/sponsor"
+                                        : "/profile"
+                                }
+                                className={s.username}
+                            >
                                 {userInfo?.first_name && userInfo?.last_name
                                     ? userInfo?.first_name +
                                       " " +

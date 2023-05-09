@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState, useEffect } from "react";
 import { Button, Input } from "../../../../../shared/components";
 import s from "./Register.module.scss";
 import { TalentsService } from "../../../../../services/api-services";
@@ -31,6 +31,11 @@ export function Register({ switcher }) {
     const { setAuth } = useContext(UserContext);
     const location = useLocation();
     const navigate = useNavigate();
+    const [isSponsor, setIsSponsor] = useState(false);
+
+    const handleChange = () => {
+        setIsSponsor(!isSponsor);
+    };
 
     const [firstName, setFirstName] = useState({
         name: "",
@@ -137,7 +142,10 @@ export function Register({ switcher }) {
                     error: "*you can use only latins letters and numbers",
                 }));
             } else {
-                setSpecialization((prev) => ({ ...prev, error: "*not valid" }));
+                setSpecialization((prev) => ({
+                    ...prev,
+                    error: "*not valid",
+                }));
             }
             setSpecialization((prev) => ({ ...prev, state: false }));
             return false;
@@ -228,7 +236,7 @@ export function Register({ switcher }) {
         return (
             validateFirstName() &&
             validateLastName() &&
-            validateSpecialization() &&
+            (isSponsor || validateSpecialization()) &&
             validateEmail() &&
             validatePassword() &&
             validateRepeatPassword()
@@ -282,7 +290,11 @@ export function Register({ switcher }) {
                 password: password.pswd,
                 specialization: specialization.spec,
             };
-            register(newUser)
+            const service = isSponsor
+                ? TalentsService.registerSponsor
+                : TalentsService.registerTalent;
+
+            service(newUser)
                 .then((response) => {
                     resetAll();
                     const { token, ...user } = response;
@@ -296,6 +308,10 @@ export function Register({ switcher }) {
                     });
                     setAuth(true);
                     redirectAfterRegister();
+
+                    if (isSponsor) {
+                        navigate(`/sponsor`);
+                    }
                 })
                 .catch((err) => {
                     console.log(err);
@@ -305,7 +321,23 @@ export function Register({ switcher }) {
     return (
         <>
             <form onSubmit={handlerSubmit} className={s.form}>
+                <label className={s.toggleSwitch}>
+                    <input
+                        className={s.checkbox}
+                        type="checkbox"
+                        checked={isSponsor}
+                        onChange={handleChange}
+                    />
+                    <span className={s.slider}>
+                        <span className={s.slider_title}>
+                            {isSponsor ? "Sponsor" : "Talent"}
+                        </span>
+
+                        <span className={s.round}></span>
+                    </span>
+                </label>
                 <span>the mark * indicating that the field is required</span>
+
                 <div className={s.input_block}>
                     <label htmlFor="first_name">First Name*</label>
                     <Input
@@ -364,28 +396,33 @@ export function Register({ switcher }) {
                     ></Input>
                     <span>{email.state ? "" : email.error}</span>
                 </div>
-                <div className={s.input_block}>
-                    <label htmlFor="specialization">Specialization*</label>
-                    <Input
-                        name="specialization"
-                        type="text"
-                        required
-                        placeholder="Java Developer"
-                        autoComplete="off"
-                        className={`${s.input} ${
-                            specialization.state ? "" : s.error
-                        }`}
-                        onChange={(event) =>
-                            setSpecialization((prev) => ({
-                                ...prev,
-                                spec: event.target.value,
-                            }))
-                        }
-                    ></Input>
-                    <span>
-                        {specialization.state ? "" : specialization.error}
-                    </span>
-                </div>
+                {!isSponsor ? (
+                    <div className={s.input_block}>
+                        <label htmlFor="specialization">Specialization*</label>
+                        <Input
+                            name="specialization"
+                            type="text"
+                            required
+                            placeholder="Java Developer"
+                            autoComplete="off"
+                            className={`${s.input} ${
+                                specialization.state ? "" : s.error
+                            }`}
+                            onChange={(event) =>
+                                setSpecialization((prev) => ({
+                                    ...prev,
+                                    spec: event.target.value,
+                                }))
+                            }
+                        ></Input>
+                        <span>
+                            {specialization.state ? "" : specialization.error}
+                        </span>
+                    </div>
+                ) : (
+                    ""
+                )}
+
                 <div className={s.input_block}>
                     <label htmlFor="password">Password*</label>
                     <Input
