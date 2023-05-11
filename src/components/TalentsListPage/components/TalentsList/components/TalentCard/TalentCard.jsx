@@ -8,14 +8,13 @@ import { TalentsContext } from "../../../../../../context/TalentsContext";
 
 export function TalentCard({ talent }) {
     const { auth, user } = useContext(UserContext);
-
-    const editPath = useCallback(()=>{
-        if(user.id === talent.id){
-            return "/profile"
-        }else{
+    const editPath = useCallback(() => {
+        if (user.id === talent.id) {
+            return "/profile";
+        } else {
             return `/talents/${talent.id}`;
         }
-    },[])
+    }, []);
 
     return (
         <Link

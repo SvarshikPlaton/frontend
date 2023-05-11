@@ -1,46 +1,3 @@
-.container {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    padding: 20px 20px;
-}
-
-.proofs_side {
-    width: 100%;
-    height: 100%;
-    padding: 10px 10px;
-}
-
-.container {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    padding: 20px 20px;
-}
-
-.name {
-    list-style: none;
-    margin-top: 50px;
-    font-weight: 800;
-}
-.skills {
-    padding: 10px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px 0.5em;
-}
-.skill {
-    font-size: 17px;
-    background-color: rgb(21, 21, 21);
-    border-radius: 30px;
-    align-self: center;
-}
-.link {
-    display: inline-block;
-    flex-direction: row;
-    margin-top: 20px;
-    margin-right: 10px;
-}
 .sponsor_data {
     flex: 30%;
     display: table;
@@ -59,63 +16,54 @@
     height: 250px;
     width: 250px;
 }
-.info {
+.kudos {
+    padding: 20px;
+    font-weight: 600;
+}
+.name {
+    list-style: none;
+    font-weight: 800;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-evenly;
 }
 
-.info_talent {
-    margin-top: 30px;
-    font-size: 30px;
-    text-align: center;
-}
-
-.socials {
-    width: 35px;
-    transition: all 0.1s ease-in;
-    &:hover {
-        transform: scale(1.1);
+.input_block {
+    line-height: 15px;
+    text-align: start;
+    padding: 0 5px;
+    input {
+        max-width: 200px;
+        font-size: 16px;
+        font-weight: 400;
+        border-radius: 10px;
+        padding: 0 5px;
+    }
+    span {
+        font-size: 10px;
+        display: inline-block;
+        padding: 0 5px;
+        text-align: justify;
+        font-weight: 600;
     }
 }
 
-.about {
-    margin-left: 20px;
-    flex: 50%;
-    display: table;
-    padding: 30px 30px;
-    font-size: 20px;
-    background-color: rgb(21, 21, 21);
-    border-radius: 20px;
+.error {
+    border: 3px solid #ff0062c1;
 }
 
-.ab_title {
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-size: 50px;
-    font-weight: 500;
+.input_add {
+    display: flex;
 }
-.bio,
-.additional_info,
-.contacts {
-    padding: 10px;
+
+.talent {
+    font-size: 17px;
+    background-color: rgb(21, 21, 21);
+    border-radius: 30px;
+    align-self: center;
 }
 
 @media screen and (max-width: 1068px) {
-    .container {
-        display: table;
-    }
     .sponsor_data {
         width: 100%;
-    }
-
-    .about {
-        width: 100%;
-        margin: 0;
-        margin-top: 20px;
-    }
-
-    .ab_title {
-        text-align: center;
     }
 }

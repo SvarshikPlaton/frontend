@@ -154,6 +154,25 @@ export const TalentsService = {
             throw error;
         }
     },
+    async editSponsor(id, editedUser, token) {
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+        try {
+            const response = await axiosInstance.patch(
+                `v3/sponsors/${id}`,
+                editedUser,
+                {
+                    headers,
+                }
+            );
+
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    },
     async editProof(id, idProof, editedProof, token) {
         const headers = {
             Authorization: `Bearer ${token}`,
@@ -182,7 +201,15 @@ export const TalentsService = {
         });
         return response;
     },
-
+    async deleteSponsor(id, token) {
+        const headers = {
+            Authorization: `Bearer ${token}`,
+        };
+        const response = await axiosInstance.delete(`v3/sponsors/${id}`, {
+            headers,
+        });
+        return response;
+    },
     async addProof(proof, id, token) {
         const headers = {
             Authorization: `Bearer ${token}`,
@@ -220,6 +247,7 @@ export const TalentsService = {
             return error;
         }
     },
+
     async deleteProof(id, idProof, token) {
         try {
             const headers = {
