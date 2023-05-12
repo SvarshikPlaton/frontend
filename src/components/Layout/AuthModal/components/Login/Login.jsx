@@ -10,7 +10,7 @@ import { switchCase } from "@babel/types";
 const advices = [
     {
         title: "Searching and connecting",
-        text: "You can search for the talents all around the globe and connect with them easily",
+        text: "You can search for the talents all around the globe and connect with them easily.",
     },
     {
         title: "Upload any quantity of proofs",

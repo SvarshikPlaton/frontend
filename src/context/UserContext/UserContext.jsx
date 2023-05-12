@@ -16,6 +16,7 @@ export function UserProvider({ children }) {
     const [userInfo, setUserInfo] = useState({});
     const [role, setRole] = useState("");
     const [kudos, setKudos] = useState(0);
+    const [proofs, setProofs] = useState({});
 
     useEffect(() => {
         if (cookies.token) {
@@ -72,8 +73,10 @@ export function UserProvider({ children }) {
             setRole,
             kudos,
             setKudos,
+            proofs,
+            setProofs,
         }),
-        [auth, token, user, userInfo, talentsProofs, kudos]
+        [auth, token, user, userInfo, talentsProofs, kudos, proofs]
     );
 
     return (

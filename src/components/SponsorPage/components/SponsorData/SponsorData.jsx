@@ -18,7 +18,7 @@ import s from "./SponsorData.module.scss";
 import userAvatar from "../../../../shared/images/user.png";
 
 export const SponsorData = forwardRef((props, ref) => {
-    const { user, token, kudos, setKudos, userInfo } = useContext(UserContext);
+    const { kudos, userInfo } = useContext(UserContext);
     const {
         editting,
         firstName,
@@ -40,13 +40,13 @@ export const SponsorData = forwardRef((props, ref) => {
         }));
         setNumberKudos((prev) => ({
             ...prev,
-            ...validateKudos(numberKudos.kudos),
+            ...validateKudos(numberKudos.kudos, kudos),
         }));
 
         return (
             validateFirstName(firstName.name).state &&
             validateLastName(lastName.name).state &&
-            validateKudos(numberKudos.kudos).state
+            validateKudos(numberKudos.kudos, kudos).state
         );
     }, [firstName, lastName, numberKudos]);
 
@@ -68,11 +68,12 @@ export const SponsorData = forwardRef((props, ref) => {
                 <div className={s.kudos}>
                     {editting ? (
                         <>
-                            <div className={s.input_block}>
+                            <div className={s.add_kudos}>
                                 <Input
                                     type="text"
-                                    placeholder="amount"
+                                    placeholder="add kudos"
                                     autoComplete="off"
+                                    maxLength="10"
                                     className={`${
                                         numberKudos.state ? "" : s.error
                                     }`}

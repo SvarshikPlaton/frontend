@@ -1,6 +1,7 @@
 import s from "./ProofBlock.module.scss";
+import { Kudos } from "./components/Kudos";
 
-export function ProofBlock({ id, link, text, created, status }) {
+export function ProofBlock({ id, link, text, created, status, setProofId = null, setModalIsOpen=null }) {
     return (
         <>
             {status === "PUBLISHED" ? (
@@ -8,12 +9,7 @@ export function ProofBlock({ id, link, text, created, status }) {
                     <div className={s.proofs}>
                         <div className={s.info}>
                             <h1>Link:</h1>
-                            <a
-                                className={s.link}
-                                href={link}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
+                            <a className={s.link} href={link} target="_blank" rel="noreferrer">
                                 Click to know me more
                             </a>
                             <div className={s.proof_description}>
@@ -22,9 +18,8 @@ export function ProofBlock({ id, link, text, created, status }) {
                             </div>
                         </div>
                         <div className={s.date}>
-                            <b className={s.created}>
-                                Created: {created.split(" ")[0]}
-                            </b>
+                            <Kudos id={id} setProofId={setProofId} setModalIsOpen={setModalIsOpen} />
+                            <b className={s.created}>Created: {created.split(" ")[0]}</b>
                         </div>
                     </div>
                 </div>

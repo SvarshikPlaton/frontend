@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { TalentsService } from "../../../../../../services/api-services";
+import { Kudos } from "../../../../../TalentPage/components/ListProofs/components/ProofBlock/components/Kudos";
 import s from "./ProfileProofBlock.module.scss";
 import { handlerDropdown } from "./dropdown";
 
@@ -118,7 +119,9 @@ export function ProfileProofBlock({
                             <p>{text}</p>
                         </div>
                     </div>
+
                     <div className={s.date}>
+                        <Kudos id={id} />
                         <b className={s.created}>
                             Created: {created.split(" ")[0]}
                         </b>

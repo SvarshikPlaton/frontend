@@ -13,7 +13,6 @@ export function SponsorPage() {
     const location = useLocation();
 
     const talentDataRef = useRef(null);
-    const aboutRef = useRef(null);
 
     const { user, token } = useContext(UserContext);
     const [profile, setProfile] = useState({});
@@ -57,7 +56,7 @@ export function SponsorPage() {
         state: true,
     });
     const [numberKudos, setNumberKudos] = useState({
-        kudos: 0,
+        kudos: "",
         error: "",
         state: true,
     });
@@ -70,7 +69,6 @@ export function SponsorPage() {
         if (Object.keys(profile).length !== 0) {
             setFirstName({ name: profile?.first_name, error: "", state: true });
             setLastName({ name: profile?.last_name, error: "", state: true });
-            setNumberKudos({ error: "", state: true });
             setSaveError("");
         }
     }, [profile, editting]);
@@ -102,7 +100,9 @@ export function SponsorPage() {
                             first_name: firstName.name,
                             last_name: lastName.name,
                         }));
-                        setKudos((prev) => prev + parseInt(numberKudos.kudos));
+                        if(numberKudos.kudos !== ""){
+                            setKudos((prev) => prev + parseInt(numberKudos.kudos));
+                        }
 
                         setEditting(false);
                     })
@@ -149,15 +149,14 @@ export function SponsorPage() {
         save,
         setModalIsOpen,
         setCancelModalIsOpen,
+        saveError,
     };
 
     return (
         <>
             <ModalWindow
                 title={"Deleting"}
-                notice={
-                    "Are you sure you want to delete your account permanently?"
-                }
+                notice={"Are you sure you want to delete your account permanently?"}
                 agreeButtonText={"Yes, I want"}
                 disagreeButtonText={"No, I don't"}
                 isOpen={modalIsOpen}
@@ -183,7 +182,7 @@ export function SponsorPage() {
             <div className={s.container}>
                 <SponsorData {...propsTalentData} ref={talentDataRef} />
 
-                <SponsorAbout {...propsAbout} ref={aboutRef} />
+                <SponsorAbout {...propsAbout} />
             </div>
         </>
     );

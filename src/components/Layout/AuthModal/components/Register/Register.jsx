@@ -9,7 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const advices = [
     {
         title: "Fill out your account.",
-        text: "Upload the best avatar, you’ve ever had and write bio",
+        text: "Upload the best avatar, you’ve ever had and write bio.",
     },
     {
         title: "Time to let the world know you",

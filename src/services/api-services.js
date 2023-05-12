@@ -135,6 +135,53 @@ export const TalentsService = {
             return error;
         }
     },
+
+    async getKudos(id, token = undefined) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            let response = {};
+            if (token) {
+                response = await axiosInstance.get(
+                    `v3/proofs/${id}/kudos`,
+
+                    {
+                        headers,
+                    }
+                );
+            } else {
+                response = await axiosInstance.get(
+                    `v3/proofs/${id}/kudos`
+                );
+            }
+
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
+
+    async putKudos(id, kudoses, token) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            const response = await axiosInstance.post(
+                `v3/proofs/${id}/kudos`,
+                kudoses,
+                {
+                    headers,
+                }
+            );
+            return response.data.amount;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    },
+
     async editTalent(id, editedUser, token) {
         const headers = {
             Authorization: `Bearer ${token}`,

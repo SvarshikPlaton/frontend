@@ -8,3 +8,31 @@
 .button {
     padding: 5px 15px;
 }
+
+.modal_text {
+    width: 300px;
+    display: grid;
+    text-align: center;
+    font-size: 22px;
+}
+
+.slider {
+    width: 70%;
+    height: 25%;
+    margin: 0 auto;
+    margin-bottom: 16px;
+    appearance: none;
+    border-radius: 50px;
+    box-shadow: 0 0 10px #a582f7;
+    cursor: pointer;
+    border: 0;
+}
+
+.slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: #a582f7;
+    border-radius: 50%;
+    border: none;
+}
