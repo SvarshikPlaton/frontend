@@ -95,6 +95,10 @@ export function ListProofsPage() {
             window.location.href = `proofs?page=${page}&size=${size}#auth`;
         }
     }
+    const handleInputChange = (event) => {
+        const value = parseInt(event.target.value);
+        setKudoses(value || 0);
+    };
 
     return (
         <>
@@ -110,11 +114,17 @@ export function ListProofsPage() {
                                 }}
                                 min={1}
                                 max={kudos}
-                                step={parseInt(Math.ceil(kudoses / 100))}
+                                step={1}
                                 value={kudoses}
                                 className={s.slider}
                             ></input>
-                            <span>{kudoses}</span>
+                            <span className={s.kudos_parent}>
+                                <input
+                                    className={s.kudos_value}
+                                    onChange={handleInputChange}
+                                    value={kudoses}
+                                />
+                            </span>
                         </span>
                     </>
                 }
