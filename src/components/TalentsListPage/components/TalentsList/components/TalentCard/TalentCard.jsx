@@ -8,8 +8,9 @@ import { TalentsContext } from "../../../../../../context/TalentsContext";
 
 export function TalentCard({ talent }) {
     const { auth, user } = useContext(UserContext);
+
     const editPath = useCallback(() => {
-        if(user.role === "SPONSOR"){
+        if (user.role === "SPONSOR") {
             return "/talents";
         }
         if (user.id === talent.id) {
@@ -37,13 +38,13 @@ export function TalentCard({ talent }) {
                     {talent.first_name + " " + talent.last_name}
                 </div>
                 <div className={s.specialization}>{talent.specialization}</div>
-                <div className={s.skills}>
+                {/* <div className={s.skills}>
                     {talent.talents.map((skill, index) => (
                         <div className={s.skill} key={index}>
                             {skill}
                         </div>
                     ))}
-                </div>
+                </div> */}
             </div>
         </Link>
     );

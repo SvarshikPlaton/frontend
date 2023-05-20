@@ -179,63 +179,6 @@ export const TalentData = forwardRef((props, ref) => {
                     )}
                 </div>
 
-                <div
-                    className={`${s.talents} ${editting ? s.talents_edit : ""}`}
-                >
-                    {editting ? (
-                        <>
-                            <div className={s.input_block}>
-                                <div className={s.input_add}>
-                                    <Input
-                                        type="text"
-                                        value={talent.talent}
-                                        placeholder="talent"
-                                        autoComplete="off"
-                                        className={`${
-                                            talent.state ? "" : s.error
-                                        }`}
-                                        onChange={(event) =>
-                                            setTalent((prev) => ({
-                                                ...prev,
-                                                talent: event.target.value,
-                                            }))
-                                        }
-                                    />
-                                    <Button
-                                        onClick={addTalent}
-                                        disabled={allTalents.length >= 12}
-                                    >
-                                        Add
-                                    </Button>
-                                </div>
-                                <span>{talent.state ? "" : talent.error}</span>
-                            </div>
-                            {allTalents.length >= 1 ? <h3>Talents</h3> : ""}
-                            <ul>
-                                {allTalents.map((el, index) => (
-                                    <li key={index}>
-                                        {el}{" "}
-                                        <button
-                                            onClick={() =>
-                                                setAllTalents(
-                                                    allTalents.filter(
-                                                        (_, i) => i !== index
-                                                    )
-                                                )
-                                            }
-                                        ></button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </>
-                    ) : (
-                        profile.talents?.map((talent, index) => (
-                            <div className={s.talent} key={index}>
-                                {talent}
-                            </div>
-                        ))
-                    )}
-                </div>
                 <div className={s.links}>
                     {editting ? (
                         <>

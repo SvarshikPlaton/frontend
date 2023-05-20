@@ -15,15 +15,17 @@ export function validateLinks(link) {
 }
 
 export function validateText(text) {
-    const TEXT_REGEXP = /^[A-Za-z0-9'".,:;@#?!()[\]*_/—-\s]{1,255}$/;
+    const TEXT_REGEXP = /^[A-Za-z0-9'".,:;@#?!()[\]*_/—-\s]{4,255}$/;
     if (TEXT_REGEXP.test(String(text).toLowerCase())) {
         return { error: "", state: true };
     } else {
         let msg = "";
         if (text.trim() === "") {
             msg = "*empty field";
+        } else if (text.length < 4) {
+            msg = "*the value is too short (not less than 4 symbols)";
         } else if (text.length > 255) {
-            msg = "*the value is too long (not more 255 symbols)";
+            msg = "*the value is too long (no more 255 symbols)";
         } else if (!TEXT_REGEXP.test(String(text))) {
             msg = "*using incorrect symbols";
         }

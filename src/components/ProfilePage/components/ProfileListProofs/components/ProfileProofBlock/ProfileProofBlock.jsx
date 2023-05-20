@@ -22,7 +22,7 @@ export function ProfileProofBlock({
     window.onclick = (event) => {
         handlerDropdown(event, s.dropdown_content, s.show);
     };
-
+    const [skills, setSkills] = useState([]);
     function save(newStatus) {
         const newProof = {
             link: link,
@@ -45,6 +45,16 @@ export function ProfileProofBlock({
                 console.log(error);
             });
     }
+    useEffect(() => {
+        TalentsService.getProofsSkills(userID, id, token)
+            .then((response) => {
+                setSkills(response.skills);
+            })
+
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [userID, id, token]);
 
     return (
         <>
@@ -119,7 +129,15 @@ export function ProfileProofBlock({
                             <p>{text}</p>
                         </div>
                     </div>
-
+                    <div className={s.skills}>
+                        {skills
+                            ? skills.map((skill, index) => (
+                                  <div className={s.skill} key={index}>
+                                      {skill.skill}
+                                  </div>
+                              ))
+                            : ""}
+                    </div>
                     <div className={s.date}>
                         <Kudos id={id} />
                         <b className={s.created}>

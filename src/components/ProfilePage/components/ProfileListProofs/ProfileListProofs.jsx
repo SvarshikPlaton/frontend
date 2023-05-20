@@ -24,8 +24,9 @@ export function ProfileListProofs({ id, token }) {
                     setEditProof(
                         proofs.content.map((el) => ({ id: el.id, edit: false }))
                     );
-                    setSize(proofs.total_elements === 0 ? 5 : proofs.total_elements);
-
+                    setSize(
+                        proofs.total_elements === 0 ? 5 : proofs.total_elements
+                    );
                 })
                 .catch((err) => console.log(err));
         }

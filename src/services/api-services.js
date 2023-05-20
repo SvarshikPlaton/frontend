@@ -151,9 +151,7 @@ export const TalentsService = {
                     }
                 );
             } else {
-                response = await axiosInstance.get(
-                    `v3/proofs/${id}/kudos`
-                );
+                response = await axiosInstance.get(`v3/proofs/${id}/kudos`);
             }
 
             return response.data;
@@ -307,6 +305,84 @@ export const TalentsService = {
                 }
             );
             return response;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
+
+    async getSkills(token) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            let response = await axiosInstance.get(
+                `v4/skills`,
+
+                {
+                    headers,
+                }
+            );
+
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
+    async getProofsSkills(id, idProof, token) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            let response = await axiosInstance.get(
+                `v4/talents/${id}/proofs/${idProof}/skills`,
+
+                {
+                    headers,
+                }
+            );
+
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
+    async addProofsSkills(id, idProof, token, skills) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            let response = await axiosInstance.post(
+                `v4/talents/${id}/proofs/${idProof}/skills`,
+                skills,
+                {
+                    headers,
+                }
+            );
+
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
+
+    async deleteProofsSkills(id, idProof, token, skillId) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            let response = await axiosInstance.delete(
+                `v4/talents/${id}/proofs/${idProof}/skills/${skillId}`,
+
+                {
+                    headers,
+                }
+            );
+
+            return response.data;
         } catch (error) {
             console.log(error);
             return error;
