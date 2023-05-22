@@ -1,19 +1,39 @@
-import React, { useContext } from "react";
-import { TalentsService } from "../../../../../../services/api-services";
-import { UserContext } from "../../../../../../context/UserContext";
+import React from "react";
+
 import Select, { components } from "react-select";
 
 export function ValueCross(props) {
-    const { proof, skills } = props;
-    const { user, token } = useContext(UserContext);
-    const handleClearOne = () => {
-        TalentsService.deleteProofsSkills(
-            user.id,
-            proof.id,
-            token,
-            arguments[0].data.id
-        ).catch((error) => {
-            console.log(error);
+    const {
+        skills,
+        setSkills,
+        setDeletedSkills,
+        deletedSkills,
+        setSkillId,
+        skillId,
+    } = props;
+
+    const handleClearOne = (removedSkill) => {
+        setDeletedSkills((prevDeletedSkills) => [
+            ...prevDeletedSkills,
+            removedSkill,
+        ]);
+        setSkillId((prevSkills) => {
+            if (removedSkill.id && removedSkill.isNew) {
+                return prevSkills.filter(
+                    (skill) => skill.id !== removedSkill.id
+                );
+            } else {
+                return prevSkills.filter((skill) => skill !== removedSkill);
+            }
+        });
+        setSkills((prevSkills) => {
+            if (removedSkill.id && removedSkill.isNew) {
+                return prevSkills.filter(
+                    (skill) => skill.id !== removedSkill.id
+                );
+            } else {
+                return prevSkills.filter((skill) => skill !== removedSkill);
+            }
         });
     };
 
@@ -23,7 +43,9 @@ export function ValueCross(props) {
                 <components.MultiValueRemove {...props}>
                     <span
                         style={{ cursor: "pointer" }}
-                        onClick={handleClearOne}
+
+                        onClick={() => handleClearOne(props.data)}
+
                         onMouseDown={(e) => e.stopPropagation()}
                     >
                         x

@@ -15,7 +15,9 @@ export function ProofBlock({
     const [skills, setSkills] = useState([]);
     const { user, token } = useContext(UserContext);
     useEffect(() => {
-        TalentsService.getProofsSkills(user.id, id, token)
+
+        TalentsService.getProofsSkills(id, token)
+
             .then((response) => {
                 setSkills(response.skills);
             })
