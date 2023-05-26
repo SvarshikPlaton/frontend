@@ -215,9 +215,8 @@ export const TalentData = forwardRef((props, ref) => {
         setDeletedSkills(skills);
         setSkills([]);
         setDefaultSkills([]);
-        setSkillId([]);
     }
-    console.log(defaultSkills);
+
     return (
         <div className={s.talent_data}>
             {editting ? (

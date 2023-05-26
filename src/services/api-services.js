@@ -279,7 +279,7 @@ export const TalentsService = {
                 Authorization: `Bearer ${token}`,
             };
             let response = await axiosInstance.get(
-                `v3/sponsors/${id}/kudos`,
+                `v5/sponsors/${id}/kudos`,
 
                 {
                     headers,

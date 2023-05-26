@@ -231,7 +231,6 @@ export function ProfilePage() {
                 (error) => {}
             );
         });
-        window.location.reload();
     }
 
     const deleteTalent = () => {
