@@ -10,8 +10,6 @@ export function TalentCard({ talent }) {
     const { auth, user } = useContext(UserContext);
 
     const editPath = useCallback(() => {
-
-
         if (user.id === talent.id) {
             return "/profile";
         } else {
@@ -37,13 +35,13 @@ export function TalentCard({ talent }) {
                     {talent.first_name + " " + talent.last_name}
                 </div>
                 <div className={s.specialization}>{talent.specialization}</div>
-                {/* <div className={s.skills}>
-                    {talent.talents.map((skill, index) => (
+                <div className={s.skills}>
+                    {talent.skills.map((skill, index) => (
                         <div className={s.skill} key={index}>
-                            {skill}
+                            {skill.skill}
                         </div>
                     ))}
-                </div> */}
+                </div>
             </div>
         </Link>
     );

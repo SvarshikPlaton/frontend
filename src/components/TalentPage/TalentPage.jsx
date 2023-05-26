@@ -44,9 +44,9 @@ export function TalentPage() {
                         <p>{talent?.specialization}</p>
 
                         <div className={s.talents}>
-                            {talent.talents?.map((skill, index) => (
+                            {talent.skills?.map((skill, index) => (
                                 <div className={s.skill} key={index}>
-                                    {skill}
+                                    {skill.skill}
                                 </div>
                             ))}
                         </div>

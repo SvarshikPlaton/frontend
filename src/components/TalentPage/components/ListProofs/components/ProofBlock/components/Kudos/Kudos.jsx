@@ -24,7 +24,7 @@ export function Kudos({ id, setProofId = null, setModalIsOpen = null }) {
                 );
             })
             .catch((err) => console.log(err));
-    }, [user.id]);
+    }, [user.id, kudos]);
     function openModal() {
         if (token) {
             setProofId(id);
