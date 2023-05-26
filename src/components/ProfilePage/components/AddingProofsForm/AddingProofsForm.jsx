@@ -8,6 +8,7 @@ import { validateLinks, validateText } from "./validate";
 import Select, { components } from "react-select";
 import { CustomClearIndicator } from "./components/CustomClearIndicator";
 import { ValueCross } from "./components/ValueCross/ValueCross";
+
 export function AddingProofsForm({
     id,
     token,
@@ -18,7 +19,6 @@ export function AddingProofsForm({
     setCancelModalIsOpen = null,
 }) {
     const [skills, setSkills] = useState([]);
-    const [currentSkills, setCurrentSkills] = useState([]);
     const [skillId, setSkillId] = useState([]);
     const [defaultSkills, setDefaultSkills] = useState([]);
     const [deletedSkills, setDeletedSkills] = useState([]);
@@ -35,7 +35,13 @@ export function AddingProofsForm({
     });
 
     const [addProofError, setAddProofError] = useState("");
-    const { talentsProofs, setTalentsProofs } = useContext(UserContext);
+    const {
+        user,
+        talentsProofs,
+        setTalentsProofs,
+        currentSkills,
+        setCurrentSkills,
+    } = useContext(UserContext);
     const validateProof = useCallback(() => {
         setLink((prev) => ({
             ...prev,
@@ -73,18 +79,7 @@ export function AddingProofsForm({
             fontWeight: 500,
             fontSize: "16px",
         }),
-        // multiValue: (styles) => ({
-        //     ...styles,
-        //     fontSize: "22px",
-        //     backgroundColor: "#686868",
-        //     borderRadius: "30px",
-        //     border: "2px solid #888888",
-        //     padding: "0px 10px",
-        // }),
-        // multiValueLabel: (styles) => ({
-        //     ...styles,
-        //     color: "#fff",
-        // }),
+
         option: (styles, state) => ({
             ...styles,
             backgroundColor: state.isFocused ? "#a582f7" : "transparent",
@@ -124,7 +119,7 @@ export function AddingProofsForm({
                     console.log(error);
                 });
         }
-    }, [proof]);
+    }, [proof, token]);
 
     function handle(e) {
         e.preventDefault();
@@ -223,7 +218,6 @@ export function AddingProofsForm({
 
         const uniqueSkillId = skillId.filter((id) => {
             // сделал так, чтобы в добавлении те скилы, которые уже есть в поле, игнорировались и повторно не записывались.
-
             return !skills.some((skill) => skill.id === id);
         });
 

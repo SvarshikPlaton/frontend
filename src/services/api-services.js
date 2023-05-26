@@ -167,7 +167,7 @@ export const TalentsService = {
                 Authorization: `Bearer ${token}`,
             };
             const response = await axiosInstance.post(
-                `v3/proofs/${id}/kudos`,
+                `v5/proofs/${id}/kudos`,
                 kudoses,
                 {
                     headers,
@@ -330,17 +330,33 @@ export const TalentsService = {
             return error;
         }
     },
-
-    async getProofsSkills(idProof, token) {
-
+    async getAllSkills(id, token) {
         try {
             const headers = {
                 Authorization: `Bearer ${token}`,
             };
             let response = await axiosInstance.get(
+                `v4/talents/${id}/proofs/skills`,
 
-                `v4/proofs/${idProof}/skills`,
+                {
+                    headers,
+                }
+            );
 
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
+    async getProofsSkills(idProof, token) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+
+            let response = await axiosInstance.get(
+                `v5/proofs/${idProof}/skills`,
 
                 {
                     headers,
@@ -359,7 +375,7 @@ export const TalentsService = {
                 Authorization: `Bearer ${token}`,
             };
             let response = await axiosInstance.post(
-                `v4/talents/${id}/proofs/${idProof}/skills`,
+                `v5/talents/${id}/proofs/${idProof}/skills`,
                 skills,
                 {
                     headers,
@@ -379,7 +395,65 @@ export const TalentsService = {
                 Authorization: `Bearer ${token}`,
             };
             let response = await axiosInstance.delete(
-                `v4/talents/${id}/proofs/${idProof}/skills/${skillId}`,
+                `v5/talents/${id}/proofs/${idProof}/skills/${skillId}`,
+
+                {
+                    headers,
+                }
+            );
+
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
+    async addTalentImage(id, token) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            let response = await axiosInstance.post(
+                `v3/talents/talents/${id}/image/upload`,
+
+                {
+                    headers,
+                }
+            );
+
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
+
+    async addTalentSkills(id, token, skills) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            let response = await axiosInstance.post(
+                `v4/talents/${id}/skills`,
+                skills,
+                {
+                    headers,
+                }
+            );
+
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
+    async deleteTalentSkills(id, token, skillId) {
+        try {
+            const headers = {
+                Authorization: `Bearer ${token}`,
+            };
+            let response = await axiosInstance.delete(
+                `v4/talents/${id}/skills/${skillId}`,
 
                 {
                     headers,

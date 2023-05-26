@@ -2,7 +2,11 @@ import React, { useCallback, forwardRef, useImperativeHandle } from "react";
 import { Button, Textarea } from "../../../../shared/components";
 import edit from "./images/edit.svg";
 import s from "./About.module.scss";
-import { validateAdditionalInfo, validateBio, validateContacts } from "./validate";
+import {
+    validateAdditionalInfo,
+    validateBio,
+    validateContacts,
+} from "./validate";
 
 export const About = forwardRef((props, ref) => {
     const {
@@ -19,6 +23,8 @@ export const About = forwardRef((props, ref) => {
         contacts,
         setContacts,
         saveError,
+        skills,
+        setSkills,
     } = props;
 
     const validateAbout = useCallback(() => {
@@ -52,6 +58,7 @@ export const About = forwardRef((props, ref) => {
         }),
         [validateAbout]
     );
+
     return (
         <div className={s.about}>
             <button
@@ -71,7 +78,9 @@ export const About = forwardRef((props, ref) => {
                         <Textarea
                             placeholder="your biography"
                             value={bio.bio}
-                            className={`${s.big_textarea} ${bio.state ? "" : s.error}`}
+                            className={`${s.big_textarea} ${
+                                bio.state ? "" : s.error
+                            }`}
                             maxLength="255"
                             onChange={(event) =>
                                 setBio((prev) => ({
@@ -80,7 +89,9 @@ export const About = forwardRef((props, ref) => {
                                 }))
                             }
                         />
-                        <span className={s.textarea_length}>{bio.bio.length}/255</span>
+                        <span className={s.textarea_length}>
+                            {bio.bio.length}/255
+                        </span>
                         <span>{bio.state ? "" : bio.error}</span>
                     </div>
                 ) : (
@@ -103,8 +114,12 @@ export const About = forwardRef((props, ref) => {
                                 }))
                             }
                         />
-                        <span className={s.textarea_length}>{additionalInfo.info.length}/255</span>
-                        <span>{additionalInfo.state ? "" : additionalInfo.error}</span>
+                        <span className={s.textarea_length}>
+                            {additionalInfo.info.length}/255
+                        </span>
+                        <span>
+                            {additionalInfo.state ? "" : additionalInfo.error}
+                        </span>
                     </div>
                 ) : (
                     <p>{profile.additional_info}</p>
@@ -116,7 +131,9 @@ export const About = forwardRef((props, ref) => {
                 {editting ? (
                     <>
                         <div className={s.textarea_block}>
-                            <span className={s.contact_info}>write contacts separating them with a paragraph</span>
+                            <span className={s.contact_info}>
+                                write contacts separating them with a paragraph
+                            </span>
                             <Textarea
                                 placeholder="your contacts (links or email)"
                                 value={contacts.contacts}
@@ -187,7 +204,13 @@ export const About = forwardRef((props, ref) => {
                     )} */}
             {editting ? (
                 <div className={s.btns}>
-                    <Button onClick={() => setCancelModalIsOpen(true)} className={s.btn}>
+                    <Button
+                        onClick={() => {
+                            setCancelModalIsOpen(true);
+                            setSkills(skills);
+                        }}
+                        className={s.btn}
+                    >
                         Cancel
                     </Button>
                     <Button onClick={save} className={s.btn}>

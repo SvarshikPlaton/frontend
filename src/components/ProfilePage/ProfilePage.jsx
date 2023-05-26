@@ -22,13 +22,15 @@ export function ProfilePage() {
     const [profile, setProfile] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [cookies, setCookie, removeCookie] = useCookies(["token", "user"]);
-
+    const [deletedSkills, setDeletedSkills] = useState([]);
     const [editting, setEditting] = useState(false);
     const { setUserInfo } = useContext(UserContext);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
     const [saveError, setSaveError] = useState("");
+    const [skillId, setSkillId] = useState([]);
 
+    const [skills, setSkills] = useState([]);
     useEffect(() => {
         if (editting) {
             navigate(`${location.pathname}${location.search}#edit`, {
@@ -48,6 +50,7 @@ export function ProfilePage() {
                 .then((response) => {
                     setProfile(response);
                     setIsLoading(false);
+                    setSkills(response.skills);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -92,16 +95,7 @@ export function ProfilePage() {
         error: "",
         state: true,
     });
-    // const [password, setPassword] = useState({
-    //     pswd: "",
-    //     error: "",
-    //     state: true,
-    // });
-    // const [newPassword, setNewPassword] = useState({
-    //     pswd: "",
-    //     error: "",
-    //     state: true,
-    // });
+
     useEffect(() => {
         setUserInfo(profile);
     }, [profile]);
@@ -177,7 +171,8 @@ export function ProfilePage() {
     function save() {
         talentDataRef.current?.validate();
         aboutRef.current?.validate();
-        let isValid = talentDataRef.current?.validate() && aboutRef.current?.validate();
+        let isValid =
+            talentDataRef.current?.validate() && aboutRef.current?.validate();
 
         if (isValid) {
             const obj = {
@@ -185,7 +180,9 @@ export function ProfilePage() {
                 last_name: lastName.name,
                 specialization: specialization.spec,
                 talents: allTalents,
-                links: links.map((el) => el.link).filter((el) => el.trim().length !== 0),
+                links: links
+                    .map((el) => el.link)
+                    .filter((el) => el.trim().length !== 0),
                 bio: normalizeString(bio.bio),
                 additional_info: normalizeString(additionalInfo.info),
                 contacts: normalizeContacts(contacts.contacts),
@@ -201,9 +198,13 @@ export function ProfilePage() {
                             last_name: lastName.name,
                             specialization: specialization.spec,
                             talents: allTalents,
-                            links: links.map((el) => el.link).filter((el) => el.trim().length !== 0),
+                            links: links
+                                .map((el) => el.link)
+                                .filter((el) => el.trim().length !== 0),
                             bio: normalizeString(bio.bio),
-                            additional_info: normalizeString(additionalInfo.info),
+                            additional_info: normalizeString(
+                                additionalInfo.info
+                            ),
                             contacts: normalizeContacts(contacts.contacts),
                         }));
                         setEditting(false);
@@ -217,6 +218,20 @@ export function ProfilePage() {
                 console.error(error);
             }
         }
+
+        TalentsService.addTalentSkills(user.id, token, { id: skillId })
+
+            .then(() => {
+                setSkills(skills);
+            })
+            .catch((error) => {});
+
+        deletedSkills.forEach((el) => {
+            TalentsService.deleteTalentSkills(user.id, token, el.id).catch(
+                (error) => {}
+            );
+        });
+        window.location.reload();
     }
 
     const deleteTalent = () => {
@@ -272,7 +287,9 @@ export function ProfilePage() {
         <>
             <ModalWindow
                 title={"Deleting"}
-                notice={"Are you sure you want to delete your account permanently?"}
+                notice={
+                    "Are you sure you want to delete your account permanently?"
+                }
                 agreeButtonText={"Yes, I want"}
                 disagreeButtonText={"No, I don't"}
                 isOpen={modalIsOpen}
@@ -287,7 +304,9 @@ export function ProfilePage() {
                 disagreeButtonText={"No, I don't"}
                 isOpen={cancelModalIsOpen}
                 setIsOpen={setCancelModalIsOpen}
-                func={()=>{setEditting(false)}}
+                func={() => {
+                    setEditting(false);
+                }}
             />
             <div className={s.btns}>
                 <Button className={s.btn} onClick={() => navigate(-1)}>
@@ -295,8 +314,22 @@ export function ProfilePage() {
                 </Button>
             </div>
             <div className={s.container}>
-                <TalentData {...propsTalentData} ref={talentDataRef} />
-                <About {...propsAbout} ref={aboutRef} />
+                <TalentData
+                    {...propsTalentData}
+                    ref={talentDataRef}
+                    onChange={setSkillId}
+                    skills={skills}
+                    setSkills={setSkills}
+                    setDeletedSkills={setDeletedSkills}
+                    skillId={skillId}
+                    setSkillId={setSkillId}
+                />
+                <About
+                    {...propsAbout}
+                    ref={aboutRef}
+                    skills={skills}
+                    setSkills={setSkills}
+                />
             </div>
             <div className={s.proofs_side}>
                 <AddingProofsForm id={user.id} token={token} />

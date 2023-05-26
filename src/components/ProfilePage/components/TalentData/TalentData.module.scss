@@ -61,7 +61,7 @@
     gap: 10px 0.5em;
 }
 
-.talents_edit{
+.talents_edit {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -71,12 +71,12 @@
         width: 250px;
         margin-right: 10px;
     }
-    button{
+    button {
         padding: 0 5px;
-        &[disabled]{
+        &[disabled] {
             opacity: 0.7;
             cursor: default;
-            &:hover{
+            &:hover {
                 background-size: 100%;
             }
         }
@@ -87,13 +87,13 @@
         flex-wrap: wrap;
         text-align: start;
         padding: 0 5px;
-        li{
+        li {
             width: 45%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 14px;
-            button{
+            button {
                 width: 15px;
                 height: 15px;
                 border-radius: 50%;
@@ -110,14 +110,14 @@
                     left: 25%;
                 }
             }
-            &:nth-child(2n+1){
+            &:nth-child(2n + 1) {
                 margin-right: 20px;
             }
         }
-      }
+    }
 }
 
-.input_add{
+.input_add {
     display: flex;
 }
 
@@ -141,10 +141,10 @@
         line-height: 36px;
         border-radius: 50%;
         background: #000;
-        &[disabled]{
-			opacity: 0.5;
-			cursor: default;
-		}
+        &[disabled] {
+            opacity: 0.5;
+            cursor: default;
+        }
     }
 }
 
@@ -154,7 +154,22 @@
     margin-top: 20px;
     margin-right: 10px;
 }
-
+.skills {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 450px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.skill {
+    font-size: 14px;
+    background-color: #686868;
+    border-radius: 30px;
+    border: 2px solid #888888;
+    padding: 0px 10px;
+}
 .socials {
     width: 35px;
     transition: all 0.1s ease-in;
@@ -164,7 +179,7 @@
 }
 
 @media screen and (max-width: 1068px) {
-	.talent_data {
+    .talent_data {
         width: 100%;
     }
 }

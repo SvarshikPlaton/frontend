@@ -44,7 +44,7 @@ export function validateKudos(kudos, summary) {
         return { error: "*enter only positive integer number", state: false };
     } else if(Number(kudos) + Number(summary) > 2000000000){
         return { error: "*you cannot have a total of number of kudoses more than 2 billion", state: false };
-    }
+    } 
 
     return { error: "", state: true };
 }

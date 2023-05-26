@@ -96,46 +96,75 @@ export function ListProofsPage() {
         }
     }
     const handleInputChange = (event) => {
-        const value = parseInt(event.target.value);
-        setKudoses(value || 0);
+        const value = event.target.value.trim();
+        if (value === "") {
+            setKudoses(0);
+        } else {
+            const parsedValue = parseInt(value);
+            if (!isNaN(parsedValue) && parsedValue <= kudos) {
+                setKudoses(parsedValue);
+            } else {
+                setKudoses(kudos);
+            }
+        }
     };
 
     return (
         <>
-            <ModalWindow
-                title={"Kudos Proof"}
-                notice={
-                    <>
-                        <span className={s.modal_text}>
-                            <input
-                                type="range"
-                                onChange={(event) => {
-                                    setKudoses(event.target.value);
-                                }}
-                                min={1}
-                                max={kudos}
-                                step={1}
-                                value={kudoses}
-                                className={s.slider}
-                            ></input>
-                            <span className={s.kudos_parent}>
+            {kudos !== 0 ? (
+                <ModalWindow
+                    title={"Kudos Proof"}
+                    notice={
+                        <>
+                            <span className={s.modal_text}>
                                 <input
-                                    className={s.kudos_value}
-                                    onChange={handleInputChange}
+                                    type="range"
+                                    onChange={(event) => {
+                                        setKudoses(event.target.value);
+                                    }}
+                                    min={1}
+                                    max={kudos}
+                                    step={1}
                                     value={kudoses}
-                                />
+                                    className={s.slider}
+                                ></input>
+                                <span className={s.kudos_parent}>
+                                    <input
+                                        className={s.kudos_value}
+                                        onChange={handleInputChange}
+                                        value={kudoses}
+                                    />
+                                </span>
                             </span>
-                        </span>
-                    </>
-                }
-                agreeButtonText={"Kudos"}
-                disagreeButtonText={"Close"}
-                isOpen={modalIsOpen}
-                setIsOpen={setModalIsOpen}
-                func={() => {
-                    likeProof(kudoses);
-                }}
-            />
+                        </>
+                    }
+                    agreeButtonText={"Kudos"}
+                    disagreeButtonText={"Close"}
+                    isOpen={modalIsOpen}
+                    setIsOpen={setModalIsOpen}
+                    func={() => {
+                        likeProof(kudoses);
+                    }}
+                />
+            ) : (
+                <ModalWindow
+                    title={"Kudos Proof"}
+                    notice={
+                        <>
+                            <span className={s.modal_text}>
+                                You can't put kudoses
+                            </span>
+                        </>
+                    }
+                    disagreeButtonText={"Close"}
+                    isOpen={modalIsOpen}
+                    setIsOpen={setModalIsOpen}
+                    func={() => {
+                        likeProof(kudoses);
+                    }}
+                />
+            )}
+
             <div>
                 <div className={s.buttons}>
                     <Button className={s.button} onClick={filterByDateDesc}>
