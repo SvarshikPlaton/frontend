@@ -114,7 +114,7 @@ export function Login({ switcher }) {
         (e) => {
             e.preventDefault();
             if (validateForm()) {
-                login(email.mail, password.pswd)
+                login(email.mail.toLowerCase(), password.pswd)
                     .then((response) => {
                         setErrMessage("");
                         setEmail({ mail: "", error: "", state: true });

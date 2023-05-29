@@ -408,13 +408,14 @@ export const TalentsService = {
             return error;
         }
     },
-    async addTalentImage(id, token) {
+    async addTalentImage(id, obj, token) {
         try {
             const headers = {
                 Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
             };
             let response = await axiosInstance.post(
-                `v3/talents/talents/${id}/image/upload`,
+                `v3/talents/${id}/image/upload`, obj,
 
                 {
                     headers,
@@ -423,8 +424,7 @@ export const TalentsService = {
 
             return response.data;
         } catch (error) {
-            console.log(error);
-            return error;
+            throw error
         }
     },
 

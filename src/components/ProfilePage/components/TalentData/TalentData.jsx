@@ -1,11 +1,4 @@
-import React, {
-    useCallback,
-    forwardRef,
-    useImperativeHandle,
-    useContext,
-    useState,
-    useEffect,
-} from "react";
+import React, { useCallback, forwardRef, useImperativeHandle, useContext, useState, useEffect } from "react";
 import { Input, Button } from "../../../../shared/components";
 import userAvatar from "../../../../shared/images/user.png";
 import plus from "./images/plus.svg";
@@ -15,13 +8,7 @@ import Select, { components } from "react-select";
 import { ClearTalentSkills } from "./components/ClearTalentSkills/ClearTalentSkills";
 import { ClearOneSkill } from "./components/ClearOneSkill/ClearOneSkill";
 import s from "./TalentData.module.scss";
-import {
-    validateFirstName,
-    validateLastName,
-    validateLinks,
-    validateSpecialization,
-    validateTalent,
-} from "./validate";
+import { validateFirstName, validateLastName, validateLinks, validateSpecialization, validateTalent } from "./validate";
 import { Links } from "./components/Links";
 import { UserContext } from "../../../../context/UserContext/UserContext";
 import { TalentsService } from "../../../../services/api-services";
@@ -62,7 +49,6 @@ export const TalentData = forwardRef((props, ref) => {
     const { user, token } = useContext(UserContext);
     const [defaultSkills, setDefaultSkills] = useState([]);
     const [skills, setFormSkills] = useState(props.skills || []);
-    const [image, setImage] = useState();
     const [imageURL, setImageURL] = useState();
     const fileReader = new FileReader();
     const [currentSkills, setCurrentSkills] = useState([]);
@@ -87,6 +73,7 @@ export const TalentData = forwardRef((props, ref) => {
         setDeletedSkills,
         skillId,
         setSkillId,
+        setImage,
     } = props;
     useEffect(() => {
         if (user.id) {
@@ -152,35 +139,24 @@ export const TalentData = forwardRef((props, ref) => {
             ...validateTalent(talent.talent),
         }));
         if (validateTalent(talent.talent).state) {
-            setAllTalents((prev) => [
-                ...prev,
-                talent.talent.replace(/\s+/g, " ").trim(),
-            ]);
+            setAllTalents((prev) => [...prev, talent.talent.replace(/\s+/g, " ").trim()]);
             setTalent({ talent: "", error: "", state: true });
         }
     }
+
     fileReader.onloadend = () => {
         setImageURL(fileReader.result);
     };
+
     const handleOnChange = (event) => {
         event.preventDefault();
-        // const file = event.target.files[0];
-        // setImage(file.name);
-        // console.log(file.name);
-        // fileReader.readAsDataURL(file);
-        TalentsService.addTalentImage(user.id, token)
-            .then((response) => {
-                if (event.target.files && event.target.files.length) {
-                    const file = event.target.files[0];
-                    setImage(file.name);
-                    console.log(file.name);
-                    fileReader.readAsDataURL(file);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        const file = event.target.files[0];
+        if (file) {
+            fileReader.readAsDataURL(file);
+        }
+        setImage({ file });
     };
+
     const writeSkills = useCallback((data) => {
         if (
             !props.skills.find((el) => {
@@ -192,14 +168,11 @@ export const TalentData = forwardRef((props, ref) => {
 
         setSkills(data);
     });
+
     useEffect(() => {
         let map = [];
         if (skills.length !== 0 && currentSkills.length !== 0) {
-            map = props.skills.map((item) =>
-                currentSkills.find(
-                    (lowerItem) => item.skill === lowerItem.label
-                )
-            );
+            map = props.skills.map((item) => currentSkills.find((lowerItem) => item.skill === lowerItem.label));
         }
         if (!props.skills[0]?.value) {
             map = props.skills.map((el) => ({
@@ -210,6 +183,11 @@ export const TalentData = forwardRef((props, ref) => {
         }
         setDefaultSkills(map);
     }, [skills, currentSkills]);
+
+    useEffect(() => {
+        setImageURL();
+        setImage();
+    }, [editting]);
 
     function handleClear() {
         setDeletedSkills(skills);
@@ -223,21 +201,13 @@ export const TalentData = forwardRef((props, ref) => {
                 <>
                     <img
                         className={s.ava}
-                        src={imageURL ? imageURL : userAvatar}
+                        src={imageURL ? imageURL : profile.image ? profile.image : userAvatar}
                         alt="avatar"
                     />
-                    <Input
-                        type="file"
-                        onChange={handleOnChange}
-                        className={s.avatar}
-                    />
+                    <Input type="file" onChange={handleOnChange} className={s.avatar} />
                 </>
             ) : (
-                <img
-                    className={s.ava}
-                    src={imageURL ? imageURL : userAvatar}
-                    alt="avatar"
-                />
+                <img className={s.ava} src={profile.image ? profile.image : userAvatar} alt="avatar" />
             )}
 
             <div>
@@ -250,9 +220,7 @@ export const TalentData = forwardRef((props, ref) => {
                                     value={firstName.name}
                                     placeholder="first name"
                                     autoComplete="off"
-                                    className={`${
-                                        firstName.state ? "" : s.error
-                                    }`}
+                                    className={`${firstName.state ? "" : s.error}`}
                                     onChange={(event) =>
                                         setFirstName((prev) => ({
                                             ...prev,
@@ -260,9 +228,7 @@ export const TalentData = forwardRef((props, ref) => {
                                         }))
                                     }
                                 />
-                                <span>
-                                    {firstName.state ? "" : firstName.error}
-                                </span>
+                                <span>{firstName.state ? "" : firstName.error}</span>
                             </div>
                             <div className={s.input_block}>
                                 <Input
@@ -270,9 +236,7 @@ export const TalentData = forwardRef((props, ref) => {
                                     value={lastName.name}
                                     placeholder="last name"
                                     autoComplete="off"
-                                    className={`${
-                                        lastName.state ? "" : s.error
-                                    }`}
+                                    className={`${lastName.state ? "" : s.error}`}
                                     onChange={(event) =>
                                         setLastName((prev) => ({
                                             ...prev,
@@ -280,9 +244,7 @@ export const TalentData = forwardRef((props, ref) => {
                                         }))
                                     }
                                 />
-                                <span>
-                                    {lastName.state ? "" : lastName.error}
-                                </span>
+                                <span>{lastName.state ? "" : lastName.error}</span>
                             </div>
                         </>
                     ) : (
@@ -298,9 +260,7 @@ export const TalentData = forwardRef((props, ref) => {
                                 value={specialization.spec}
                                 placeholder="specialization"
                                 autoComplete="off"
-                                className={`${
-                                    specialization.state ? "" : s.error
-                                }`}
+                                className={`${specialization.state ? "" : s.error}`}
                                 onChange={(event) =>
                                     setSpecialization((prev) => ({
                                         ...prev,
@@ -308,11 +268,7 @@ export const TalentData = forwardRef((props, ref) => {
                                     }))
                                 }
                             />
-                            <span>
-                                {specialization.state
-                                    ? ""
-                                    : specialization.error}
-                            </span>
+                            <span>{specialization.state ? "" : specialization.error}</span>
                         </div>
                     ) : (
                         <p>{profile?.specialization}</p>
@@ -323,12 +279,7 @@ export const TalentData = forwardRef((props, ref) => {
                     {editting ? (
                         <>
                             {links.map((el) => (
-                                <Links
-                                    links={links}
-                                    setLinks={setLinks}
-                                    el={el}
-                                    key={el.id}
-                                />
+                                <Links links={links} setLinks={setLinks} el={el} key={el.id} />
                             ))}
 
                             <button
@@ -369,11 +320,7 @@ export const TalentData = forwardRef((props, ref) => {
                                         />
                                     ),
                                     ClearIndicator: (props) => (
-                                        <ClearTalentSkills
-                                            {...props}
-                                            skills={skills}
-                                            clearValue={handleClear}
-                                        />
+                                        <ClearTalentSkills {...props} skills={skills} clearValue={handleClear} />
                                     ),
                                 }}
                             />
@@ -382,17 +329,9 @@ export const TalentData = forwardRef((props, ref) => {
                         (profile.links?.map((link, talent) => (
                             <a className={s.link} href={link} key={talent}>
                                 {link.includes("linkedin") ? (
-                                    <img
-                                        className={s.socials}
-                                        src={linkedin}
-                                        alt=" media icon"
-                                    />
+                                    <img className={s.socials} src={linkedin} alt=" media icon" />
                                 ) : (
-                                    <img
-                                        className={s.socials}
-                                        src={github}
-                                        alt=" media icon"
-                                    />
+                                    <img className={s.socials} src={github} alt=" media icon" />
                                 )}
                             </a>
                         )),

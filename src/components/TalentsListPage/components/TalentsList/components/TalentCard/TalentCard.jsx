@@ -10,7 +10,7 @@ export function TalentCard({ talent }) {
     const { auth, user } = useContext(UserContext);
 
     const editPath = useCallback(() => {
-        if (user.id === talent.id) {
+        if (user.id === talent.id && user.role === "TALENT") {
             return "/profile";
         } else {
             return `/talents/${talent.id}`;

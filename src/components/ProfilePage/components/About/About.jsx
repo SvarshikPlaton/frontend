@@ -145,6 +145,9 @@ export const About = forwardRef((props, ref) => {
                                     }))
                                 }
                             />
+                            <span className={s.textarea_length}>
+                                {contacts.contacts.length}/400
+                            </span>
                             <span>{contacts.state ? "" : contacts.error}</span>
                         </div>
                     </>

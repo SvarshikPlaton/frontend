@@ -8,8 +8,7 @@ import { Pagination } from "../TalentsListPage/components/Pagination";
 import s from "./ListProofsPage.module.scss";
 
 export function ListProofsPage() {
-    const { token, kudos, setKudos, proofs, setProofs } =
-        useContext(UserContext);
+    const { token, kudos, setKudos, proofs, setProofs } = useContext(UserContext);
     const [pages, setPages] = useState({ page: 0, size: 5, orderBy: "desc" });
     const [countOfPages, setCountOfPages] = useState(0);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -48,21 +47,15 @@ export function ListProofsPage() {
 
     useEffect(() => {
         if (0 < page < countOfPages) {
-            TalentsService.getAllProofs(
-                searchParams.get("page") || "",
-                pages.size,
-                pages.orderBy
-            ).then((res) => {
+            TalentsService.getAllProofs(searchParams.get("page") || "", pages.size, pages.orderBy).then((res) => {
                 setProofs(res.content);
                 setCountOfPages(res.total_pages);
             });
         } else {
-            TalentsService.getAllProofs(0, pages.size, pages.orderBy).then(
-                (res) => {
-                    setProofs(res.content);
-                    setCountOfPages(res.total_pages);
-                }
-            );
+            TalentsService.getAllProofs(0, pages.size, pages.orderBy).then((res) => {
+                setProofs(res.content);
+                setCountOfPages(res.total_pages);
+            });
         }
     }, [pages, page, size]);
 
@@ -80,17 +73,25 @@ export function ListProofsPage() {
 
     function likeProof(kudoses) {
         if (token) {
-            const obj = { amount: kudoses };
-            TalentsService.putKudos(proofId, obj, token)
-                .then(() => {
-                    setKudos((prev) => prev - parseInt(obj.amount));
-                    setKudoses(1);
-                })
-                .catch((err) => {
-                    if (err.response.status === 403) {
-                        alert("You have been already kudosed this proof");
-                    }
-                });
+            if (parseInt(kudoses) === 0) {
+                alert("You can't give 0 kudoses");
+                
+            } else if (parseInt(kudoses) > kudos){
+                alert("You can't give kudoses more than you have");
+            }else {
+                const obj = { amount: kudoses };
+                TalentsService.putKudos(proofId, obj, token)
+                    .then(() => {
+                        setKudos((prev) => prev - parseInt(obj.amount));
+                        setKudoses(1);
+                    })
+                    .catch((err) => {
+                        
+                        if (err.response.status === 403) {
+                            alert("You have been already kudosed this proof");
+                        }
+                    });
+            }
         } else {
             window.location.href = `proofs?page=${page}&size=${size}#auth`;
         }
@@ -129,11 +130,7 @@ export function ListProofsPage() {
                                     className={s.slider}
                                 ></input>
                                 <span className={s.kudos_parent}>
-                                    <input
-                                        className={s.kudos_value}
-                                        onChange={handleInputChange}
-                                        value={kudoses}
-                                    />
+                                    <input className={s.kudos_value} onChange={handleInputChange} value={kudoses} />
                                 </span>
                             </span>
                         </>
@@ -151,9 +148,7 @@ export function ListProofsPage() {
                     title={"Kudos Proof"}
                     notice={
                         <>
-                            <span className={s.modal_text}>
-                                You can't put kudoses
-                            </span>
+                            <span className={s.modal_text}>You can't put kudoses</span>
                         </>
                     }
                     disagreeButtonText={"Close"}
@@ -193,12 +188,7 @@ export function ListProofsPage() {
                 ) : (
                     <div></div>
                 )}
-                <Pagination
-                    countOfPages={countOfPages}
-                    page={page}
-                    size={pages.size}
-                    path={"proofs"}
-                />
+                <Pagination countOfPages={countOfPages} page={page} size={pages.size} path={"proofs"} />
             </div>
         </>
     );

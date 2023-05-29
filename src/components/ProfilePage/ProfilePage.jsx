@@ -29,6 +29,7 @@ export function ProfilePage() {
     const [cancelModalIsOpen, setCancelModalIsOpen] = useState(false);
     const [saveError, setSaveError] = useState("");
     const [skillId, setSkillId] = useState([]);
+    const [image, setImage] = useState();
 
     const [skills, setSkills] = useState([]);
     useEffect(() => {
@@ -207,13 +208,27 @@ export function ProfilePage() {
                             ),
                             contacts: normalizeContacts(contacts.contacts),
                         }));
-                        setEditting(false);
                     })
                     .catch((error) => {
                         if (error.response.status === 400) {
                             setSaveError("Data entered incorrectly");
                         }
                     });
+
+                    if(image){
+                        TalentsService.addTalentImage(user.id, image, token)
+                        .then(() => {
+                            setEditting(false);
+                        })
+                        .catch((error) => {
+                            if (error.response.status === 400) {
+                                setSaveError("You cannot upload image more than 1 MB or not correct format");
+                            }
+                        });
+                    } else if(!image){
+                        setEditting(false);
+                    }
+                
             } catch (error) {
                 console.error(error);
             }
@@ -264,6 +279,7 @@ export function ProfilePage() {
         setAllTalents,
         links,
         setLinks,
+        setImage,
     };
 
     const propsAbout = {
