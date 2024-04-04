@@ -2,7 +2,7 @@ import axios from "axios";
 import { decode as base64_decode, encode as base64_encode } from "base-64";
 import { useCookies } from "react-cookie";
 
-const BASE_URL = "http://18.194.159.42:8081/api/";
+const BASE_URL = process.env.REACT_APP_API_URL
 
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
