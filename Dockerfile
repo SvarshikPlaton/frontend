@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY . . 
 
-ARG REACT_APP_API_URL
-ENV REACT_APP_API_URL=$REACT_APP_API_URL
+ARG API_URL="api.qqfq.eu/api/"
+ENV REACT_APP_API_URL=$API_URL
 
 RUN npm update -g npm \
     && npm ci --no-audit --maxsockets 1 \
